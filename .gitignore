@@ -1,17 +1,14 @@
-# Dependencies
+# --- Repo kökü (referans dosyalar) ---
+/Aktif Kampüs.pdf
+
+# --- Node / Astro ---
 node_modules/
-
-# Build çıktısı (sunucuya dist atarsın, repoda tutma)
 dist/
-
-# Astro
 .astro/
-
-# Vite / cache
 .cache/
 *.tsbuildinfo
 
-# Ortam değişkenleri (asıl sırlar burada)
+# Ortam
 .env
 .env.*
 !.env.example
@@ -27,17 +24,18 @@ pnpm-debug.log*
 Thumbs.db
 desktop.ini
 
-# IDE / editör
+# IDE
 .idea/
 .vscode/*
 !.vscode/extensions.json
+.cursor/
 *.swp
 *.swo
 
-# Test / coverage (ileride eklersen)
+# Test
 coverage/
 
-# Geçici dosyalar
+# Geçici
 *.local
 *.log
 .turbo
