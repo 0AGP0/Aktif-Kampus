@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build çıktısı (sunucuya dist atarsın, repoda tutma)
+dist/
+
+# Astro
+.astro/
+
+# Vite / cache
+.cache/
+*.tsbuildinfo
+
+# Ortam değişkenleri (asıl sırlar burada)
+.env
+.env.*
+!.env.example
+
+# Loglar
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / editör
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# Test / coverage (ileride eklersen)
+coverage/
+
+# Geçici dosyalar
+*.local
+*.log
+.turbo

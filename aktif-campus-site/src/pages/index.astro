@@ -1,0 +1,10 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Component as Hero } from "@/components/ui/hero";
+---
+
+<Layout title="Aktif Kampus | Ana Sayfa">
+  <div class="w-full h-full min-h-screen">
+    <Hero client:load />
+  </div>
+</Layout>
