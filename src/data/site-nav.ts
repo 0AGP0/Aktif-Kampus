@@ -42,10 +42,10 @@ export const mainNav: NavEntry[] = [
     label: "Başvuru Yap",
     items: [
       { label: "Başvuru sayfası", href: "/basvuru" },
-      { label: "Genel Başvuru", href: "/basvuru?tur=genel" },
-      { label: "Temsilci Başvurusu", href: "/basvuru?tur=temsilci" },
-      { label: "Kulüp Başvurusu", href: "/basvuru?tur=kulup" },
-      { label: "İş Birliği Başvurusu", href: "/basvuru?tur=is-birligi" },
+      { label: "Genel başvuru", href: "/basvuru/genel" },
+      { label: "Temsilci başvurusu", href: "/basvuru/temsilci" },
+      { label: "Kulüp başvurusu", href: "/basvuru/kulup" },
+      { label: "İş birliği başvurusu", href: "/basvuru/is-birligi" },
     ],
   },
 ];
@@ -80,8 +80,8 @@ export const footerColumns: { baslik: string; linkler: NavDropdownItem[] }[] = [
     baslik: "Katılım",
     linkler: [
       { label: "Başvuru Yap", href: "/basvuru" },
-      { label: "Temsilci başvurusu", href: "/basvuru?tur=temsilci" },
-      { label: "Kulüp başvurusu", href: "/basvuru?tur=kulup" },
+      { label: "Temsilci başvurusu", href: "/basvuru/temsilci" },
+      { label: "Kulüp başvurusu", href: "/basvuru/kulup" },
     ],
   },
 ];

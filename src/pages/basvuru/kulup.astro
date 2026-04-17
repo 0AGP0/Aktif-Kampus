@@ -1,0 +1,17 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { BasvuruPageContent } from "@/components/pages/BasvuruPageContent";
+import { basvuruTurMeta } from "@/data/basvuru-config";
+
+const tur = "kulup" as const;
+const meta = basvuruTurMeta[tur];
+---
+
+<SitePageLayout
+  title={`${meta.layoutTitle} | Aktif Kampüs`}
+  description={meta.heroSubtitle}
+  currentPath={Astro.url.pathname}
+  contentBleed
+>
+  <BasvuruPageContent client:load variant={tur} />
+</SitePageLayout>

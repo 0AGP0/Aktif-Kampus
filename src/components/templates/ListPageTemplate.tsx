@@ -1,12 +1,17 @@
 import React, { useMemo, useState } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import type { EventItem, PostItem, ProgramItem } from "@/data/site-content";
+import { events as siteEvents, type EventItem, type PostItem, type ProgramItem } from "@/data/site-content";
 
 const panelClass =
   "w-full rounded-2xl border-4 border-[#0b1f3f] bg-white/95 shadow-[12px_12px_0_#0b1f3f] backdrop-blur-sm p-6 md:p-10";
 
-const ctaBannerShell =
-  "relative overflow-hidden rounded-2xl border-4 border-[#0b1f3f] p-5 shadow-[14px_14px_0_#0b1f3f] md:p-6";
+const ctaBannerFrame =
+  "relative overflow-hidden rounded-2xl border-4 border-[#0b1f3f] shadow-[14px_14px_0_#0b1f3f]";
+const ctaBannerPad = "p-5 md:p-6";
+
+/** Liste kartlarında zaten kullanılan görseller (aynı origin parametreleri + referrerPolicy ile güvenilir yükleme) */
+const SIDEBAR_IMG_EXPLORE = siteEvents[0]?.image ?? "";
+const SIDEBAR_IMG_CAMPUS = siteEvents[2]?.image ?? siteEvents[1]?.image ?? "";
 
 const titleStyle: React.CSSProperties = {
   fontFamily: '"Arial Black", Impact, sans-serif',
@@ -20,14 +25,6 @@ const titleOnDark: React.CSSProperties = {
   color: "#ffffff",
   textShadow: "2px 2px 0 rgba(11,31,63,0.55), 3px 3px 0 rgba(204,255,0,0.28)",
 };
-
-/** Filtrelerde “hepsi” seçeneği — select içinde Unicode kaçışı kullanılmaz (metin bozulmasın). */
-const FILTER_ALL = "Tümü";
-
-const sidebarExploreImage =
-  "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=720&q=80";
-const sidebarCampusImage =
-  "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=720&q=80";
 
 const quickLinks: { href: string; label: string }[] = [
   { href: "/", label: "Ana sayfa" },
@@ -74,23 +71,36 @@ const PAGE_SIZE = 6;
 
 function ListPageChrome({ activeHref, children }: { activeHref: string; children: React.ReactNode }) {
   return (
-    <div className="w-full px-3 sm:px-4 md:px-5 xl:pl-6 xl:pr-4">
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(15rem,17rem)_minmax(0,1fr)] xl:items-start xl:gap-8">
+    <div className="w-full px-4 sm:px-5 md:px-6 lg:px-8">
+      <div className="mx-auto grid w-full max-w-[min(100%,90rem)] grid-cols-1 gap-6 sm:gap-7 xl:grid-cols-[minmax(17.5rem,20.5rem)_minmax(0,1fr)] xl:gap-8 xl:items-start">
         <aside className="order-2 flex flex-col gap-5 xl:order-1 xl:sticky xl:top-20 xl:self-start">
-          <div className={`${ctaBannerShell} bg-gradient-to-br from-[#feff9a] via-[#CCFF00] to-[#86efac]`}>
-            <div className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full bg-white/55 blur-2xl" />
-            <div className="pointer-events-none absolute -bottom-8 -left-6 h-28 w-28 rounded-full bg-[#0038ff]/15 blur-2xl" />
-            <p className="relative text-[10px] font-black uppercase tracking-[0.28em] text-[#0038ff]">{"H\u0131zl\u0131 s\u0131\u00e7rama"}</p>
-            <h2
-              className="relative mt-1 text-[clamp(1.2rem,2.4vw,1.6rem)] font-black uppercase leading-[1.05] tracking-tight"
-              style={titleStyle}
-            >
-              {"Ke\u015fif modu"}
-            </h2>
-            <p className="relative mt-2 text-[13px] font-bold leading-snug text-[#0b1f3f]/82">
-              {"T\u00fcm site bir t\u0131k uza\u011f\u0131nda; neon rota \u00fczerinden dola\u015f."}
-            </p>
-            <nav className="relative mt-4 flex flex-wrap gap-2" aria-label={"Site b\u00f6l\u00fcmleri"}>
+          <div className={`${ctaBannerFrame} bg-gradient-to-br from-[#feff9a] via-[#CCFF00] to-[#86efac]`}>
+            <div className="relative h-32 min-h-[8rem] w-full shrink-0 border-b-4 border-[#0b1f3f] bg-[#e8ecf4]">
+              <img
+                src={SIDEBAR_IMG_EXPLORE}
+                alt=""
+                className="h-full w-full object-cover"
+                width={720}
+                height={256}
+                decoding="async"
+                referrerPolicy="no-referrer"
+                loading="eager"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#CCFF00]/85 via-[#CCFF00]/20 to-transparent" />
+            </div>
+            <div className={`${ctaBannerPad} relative`}>
+              <div className="pointer-events-none absolute -right-10 top-0 h-32 w-32 rounded-full bg-white/45 blur-2xl" />
+              <p className="relative text-[10px] font-black uppercase tracking-[0.28em] text-[#0038ff]">Hızlı sıçrama</p>
+              <h2
+                className="relative mt-1 text-[clamp(1.2rem,2.4vw,1.6rem)] font-black uppercase leading-[1.05] tracking-tight"
+                style={titleStyle}
+              >
+                Keşif modu
+              </h2>
+              <p className="relative mt-2 text-[13px] font-bold leading-snug text-[#0b1f3f]/82">
+                Tüm site bir tık uzağında; neon rota üzerinden dolaş.
+              </p>
+              <nav className="relative mt-4 flex flex-wrap gap-2" aria-label="Site bölümleri">
               {quickLinks.map((l) => {
                 const active = activeHref === l.href || (l.href !== "/" && activeHref.startsWith(l.href));
                 return (
@@ -106,33 +116,51 @@ function ListPageChrome({ activeHref, children }: { activeHref: string; children
                   </a>
                 );
               })}
-            </nav>
+              </nav>
+            </div>
           </div>
 
-          <div className={`${ctaBannerShell} bg-gradient-to-br from-[#0b1f3f] via-[#0f2857] to-[#0038ff] text-white`}>
-            <div className="pointer-events-none absolute right-0 top-0 h-36 w-36 translate-x-1/3 -translate-y-1/3 rounded-full bg-[#CCFF00]/25 blur-3xl" />
-            <p className="relative text-[10px] font-black uppercase tracking-[0.26em] text-[#CCFF00]">{"Kamp\u00fcs enerjisi"}</p>
-            <h2 className="relative mt-2 text-[clamp(1.15rem,2.2vw,1.5rem)] font-black uppercase leading-[1.05]" style={titleOnDark}>
-              {"Kamp\u00fcse dal"}
-            </h2>
-            <p className="relative mt-2 text-[13px] font-semibold leading-relaxed text-white/88">
-              {"Topluluklar, temsilcilik ve kamp\u00fcs ritmi; listeyi kapatmadan devam et."}
-            </p>
-            <div className="relative mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-              <a
-                href="/basvuru"
-                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border-4 border-[#0b1f3f] bg-[#CCFF00] px-4 py-3 text-[12px] font-black uppercase tracking-wide text-[#0b1f3f] shadow-[6px_6px_0_#0b1f3f] transition hover:translate-x-0.5 hover:translate-y-0.5 sm:flex-none"
-              >
-                {"\u00d6n kay\u0131t a\u00e7"}
-                <ArrowRight className="h-4 w-4" aria-hidden />
-              </a>
-              <a
-                href="/kampus"
-                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border-4 border-white/80 bg-white/10 px-4 py-3 text-[12px] font-black uppercase tracking-wide text-white shadow-[6px_6px_0_rgba(11,31,63,0.35)] backdrop-blur-sm transition hover:bg-white/15 sm:flex-none"
-              >
-                {"Kamp\u00fcste gez"}
-                <ArrowRight className="h-4 w-4" aria-hidden />
-              </a>
+          <div className={`${ctaBannerFrame} text-white`}>
+            <div className="relative h-32 min-h-[8rem] w-full shrink-0 border-b-4 border-[#0b1f3f] bg-[#1a2d4f]">
+              <img
+                src={SIDEBAR_IMG_CAMPUS}
+                alt=""
+                className="h-full w-full object-cover"
+                width={720}
+                height={256}
+                decoding="async"
+                referrerPolicy="no-referrer"
+                loading="eager"
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b1f3f]/80 via-[#0b1f3f]/45 to-[#0038ff]/35" />
+            </div>
+            <div
+              className={`${ctaBannerPad} relative bg-gradient-to-br from-[#0b1f3f] via-[#0f2857] to-[#0038ff]`}
+            >
+              <div className="pointer-events-none absolute right-0 top-0 h-28 w-28 translate-x-1/4 -translate-y-1/4 rounded-full bg-[#CCFF00]/20 blur-3xl" />
+              <p className="relative text-[10px] font-black uppercase tracking-[0.26em] text-[#CCFF00]">Kampüs enerjisi</p>
+              <h2 className="relative mt-2 text-[clamp(1.15rem,2.2vw,1.5rem)] font-black uppercase leading-[1.05]" style={titleOnDark}>
+                Kampüse dal
+              </h2>
+              <p className="relative mt-2 text-[13px] font-semibold leading-relaxed text-white/88">
+                Topluluklar, temsilcilik ve kampüs ritmi; listeyi kapatmadan devam et.
+              </p>
+              <div className="relative mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+                <a
+                  href="/basvuru"
+                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border-4 border-[#0b1f3f] bg-[#CCFF00] px-4 py-3 text-[12px] font-black uppercase tracking-wide text-[#0b1f3f] shadow-[6px_6px_0_#0b1f3f] transition hover:translate-x-0.5 hover:translate-y-0.5 sm:flex-none"
+                >
+                  Ön kayıt aç
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </a>
+                <a
+                  href="/kampus"
+                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border-4 border-white/80 bg-white/10 px-4 py-3 text-[12px] font-black uppercase tracking-wide text-white shadow-[6px_6px_0_rgba(11,31,63,0.35)] backdrop-blur-sm transition hover:bg-white/15 sm:flex-none"
+                >
+                  Kampüste gez
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </a>
+              </div>
             </div>
           </div>
         </aside>
@@ -216,27 +244,30 @@ function EventsList({
   page: number;
   setPage: (n: number) => void;
 }) {
-  const months = useMemo(() => {
+  /** İlk segment (ör. "Planlanan") — ay yok; veriden gelen durum değerleri */
+  const scheduleOptions = useMemo(() => {
     const set = new Set<string>();
     items.forEach((e) => {
-      const m = e.when.split("·")[0]?.trim() ?? "";
-      if (m) set.add(m);
+      const key = e.when.split("·")[0]?.trim() ?? "";
+      if (key) set.add(key);
     });
-    return ["T\u00fcm\u00fc", ...Array.from(set).sort()];
+    const rest = Array.from(set).filter((x) => x !== "Planlanan").sort();
+    const head = set.has("Planlanan") ? (["Tümü", "Planlanan"] as const) : (["Tümü"] as const);
+    return [...head, ...rest];
   }, [items]);
 
-  const categories = useMemo(() => ["T\u00fcm\u00fc", ...Array.from(new Set(items.map((i) => i.category)))], [items]);
+  const categories = useMemo(() => ["Tümü", ...Array.from(new Set(items.map((i) => i.category)))], [items]);
 
-  const [month, setMonth] = useState("T\u00fcm\u00fc");
-  const [mode, setMode] = useState<"T\u00fcm\u00fc" | "online" | "fiziksel">("T\u00fcm\u00fc");
-  const [category, setCategory] = useState("T\u00fcm\u00fc");
+  const [month, setMonth] = useState("Tümü");
+  const [mode, setMode] = useState<"Tümü" | "online" | "fiziksel">("Tümü");
+  const [category, setCategory] = useState("Tümü");
 
   const filtered = useMemo(() => {
     return items.filter((e) => {
       const dateLine = e.when.split("·")[0]?.trim() ?? "";
-      const okMonth = month === "T\u00fcm\u00fc" || dateLine === month;
-      const okMode = mode === "T\u00fcm\u00fc" || e.mode === mode;
-      const okCat = category === "T\u00fcm\u00fc" || e.category === category;
+      const okMonth = month === "Tümü" || dateLine === month;
+      const okMode = mode === "Tümü" || e.mode === mode;
+      const okCat = category === "Tümü" || e.category === category;
       return okMonth && okMode && okCat;
     });
   }, [items, month, mode, category]);
@@ -256,7 +287,7 @@ function EventsList({
 
       <div className="mt-8 grid gap-4 rounded-xl border-2 border-dashed border-[#0b1f3f]/25 bg-[#f8fafc] p-4 md:grid-cols-3">
         <label className="block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]">
-          Tarih
+          Durum
           <select
             className="mt-2 w-full rounded-xl border-4 border-[#0b1f3f] bg-white px-3 py-2.5 text-[14px] font-bold text-[#0b1f3f] shadow-[3px_3px_0_#0b1f3f]"
             value={month}
@@ -265,7 +296,7 @@ function EventsList({
               setPage(0);
             }}
           >
-            {months.map((m) => (
+            {scheduleOptions.map((m) => (
               <option key={m} value={m}>
                 {m}
               </option>
@@ -282,7 +313,7 @@ function EventsList({
               setPage(0);
             }}
           >
-            <option value="T\u00fcm\u00fc">T\u00fcm\u00fc</option>
+            <option value="Tümü">Tümü</option>
             <option value="online">Online</option>
             <option value="fiziksel">Fiziksel</option>
           </select>
@@ -362,17 +393,17 @@ function ProgramsList({
   setPage: (n: number) => void;
 }) {
   const categories = useMemo(
-    () => ["T\u00fcm\u00fc", "dil kursu", "sertifika", "e\u011fitim"] as const,
+    () => ["Tümü", "dil kursu", "sertifika", "eğitim"] as const,
     [],
   );
 
-  const [cat, setCat] = useState<(typeof categories)[number]>("T\u00fcm\u00fc");
-  const [mode, setMode] = useState<"T\u00fcm\u00fc" | "online" | "offline">("T\u00fcm\u00fc");
+  const [cat, setCat] = useState<(typeof categories)[number]>("Tümü");
+  const [mode, setMode] = useState<"Tümü" | "online" | "offline">("Tümü");
 
   const filtered = useMemo(() => {
     return items.filter((p) => {
-      const okCat = cat === "T\u00fcm\u00fc" || p.category === cat;
-      const okMode = mode === "T\u00fcm\u00fc" || p.mode === mode;
+      const okCat = cat === "Tümü" || p.category === cat;
+      const okMode = mode === "Tümü" || p.mode === mode;
       return okCat && okMode;
     });
   }, [items, cat, mode]);
@@ -403,7 +434,7 @@ function ProgramsList({
           >
             {categories.map((c) => (
               <option key={c} value={c}>
-                {c === "T\u00fcm\u00fc" ? "T\u00fcm\u00fc" : c}
+                {c === "Tümü" ? "Tümü" : c}
               </option>
             ))}
           </select>
@@ -418,9 +449,9 @@ function ProgramsList({
               setPage(0);
             }}
           >
-            <option value="T\u00fcm\u00fc">T\u00fcm\u00fc</option>
+            <option value="Tümü">Tümü</option>
             <option value="online">Online</option>
-            <option value="offline">Y\u00fcz y\u00fcze</option>
+            <option value="offline">Yüz yüze</option>
           </select>
         </label>
       </div>
@@ -434,7 +465,7 @@ function ProgramsList({
             <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-lg border-2 border-[#0b1f3f] bg-[#e8f2ff] px-2 py-1 text-[10px] font-black uppercase text-[#0b1f3f]">{p.category}</span>
               <span className="rounded-lg border-2 border-[#0b1f3f]/30 bg-[#f8fafc] px-2 py-1 text-[10px] font-bold uppercase text-[#0b1f3f]/70">
-                {p.mode === "online" ? "Online" : "Y\u00fcz y\u00fcze"}
+                {p.mode === "online" ? "Online" : "Yüz yüze"}
               </span>
             </div>
             <h2 className="mt-4 text-[18px] font-black uppercase leading-snug text-[#0b1f3f]">{p.title}</h2>
@@ -474,11 +505,11 @@ function PostsList({
   page: number;
   setPage: (n: number) => void;
 }) {
-  const categories = useMemo(() => ["T\u00fcm\u00fc", ...Array.from(new Set(items.map((i) => i.category)))], [items]);
-  const [category, setCategory] = useState("T\u00fcm\u00fc");
+  const categories = useMemo(() => ["Tümü", ...Array.from(new Set(items.map((i) => i.category)))], [items]);
+  const [category, setCategory] = useState("Tümü");
 
   const filtered = useMemo(() => {
-    return items.filter((p) => category === "T\u00fcm\u00fc" || p.category === category);
+    return items.filter((p) => category === "Tümü" || p.category === category);
   }, [items, category]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
@@ -547,7 +578,7 @@ function PostsList({
       </ul>
 
       {filtered.length === 0 ? (
-        <p className="mt-10 text-center text-[15px] font-bold text-[#0b1f3f]/60">{"Bu kategoride i\u00e7erik yok."}</p>
+        <p className="mt-10 text-center text-[15px] font-bold text-[#0b1f3f]/60">Bu kategoride içerik yok.</p>
       ) : null}
 
       <Pagination page={page} totalPages={totalPages} setPage={setPage} />
@@ -574,7 +605,7 @@ function Pagination({
         onClick={() => setPage(Math.max(0, page - 1))}
       >
         <ChevronLeft className="h-4 w-4" aria-hidden />
-        {"\u00d6nceki"}
+        Önceki
       </button>
       <span className="text-[13px] font-bold text-[#0b1f3f]">
         {page + 1} / {totalPages}

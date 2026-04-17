@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion } from "motion/react";
 import { ArrowRight, Send } from "lucide-react";
-
-const turOptions = [
-  { value: "genel", label: "Genel başvuru" },
-  { value: "temsilci", label: "Temsilci başvurusu" },
-  { value: "kulup", label: "Kulüp başvurusu" },
-  { value: "is-birligi", label: "İş birliği başvurusu" },
-] as const;
+import type { BasvuruTur, BasvuruTurMeta } from "@/data/basvuru-config";
+import { basvuruTurMeta } from "@/data/basvuru-config";
+import { BASVURU_KVKK_BASLIK, BASVURU_KVKK_METNI, BASVURU_KVKK_ONAY_METNI } from "@/data/basvuru-kvkk";
 
 const titleStyle: React.CSSProperties = {
   fontFamily: '"Arial Black", Impact, sans-serif',
@@ -24,13 +20,295 @@ const titleStyleOnLightPrimary: React.CSSProperties = {
 
 const inner = "relative mx-auto w-full max-w-7xl px-5 md:px-10 lg:px-14";
 
-export function BasvuruPageContent() {
-  const [tur, setTur] = useState<string>("genel");
+const inp =
+  "mt-2 w-full rounded-xl border-4 border-[#0b1f3f] bg-white px-4 py-3.5 text-[15px] font-bold text-[#0b1f3f] placeholder:text-neutral-400 shadow-[4px_4px_0_#0b1f3f] outline-none focus:ring-2 focus:ring-[#0038ff]";
 
-  useEffect(() => {
-    const q = new URLSearchParams(window.location.search).get("tur");
-    if (q && turOptions.some((o) => o.value === q)) setTur(q);
-  }, []);
+const lbl = "block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]";
+
+function Req() {
+  return <span className="text-red-600"> *</span>;
+}
+
+const alanUygunlukSecenekleri: { value: string; label: string }[] = [
+  { value: "kampüs-temsilcisi", label: "Kampüs Temsilcisi Olmak İstiyorum" },
+  { value: "kulup-isbirligi", label: "Üniversite Kulübü İş Birliği" },
+  { value: "egitim-sertifika", label: "Eğitim ve Sertifika Programları" },
+  { value: "dil-kurslari", label: "Dil Kursları" },
+  { value: "yurtdisi-gezi", label: "Yurtdışı Eğitim & Gezi" },
+  { value: "konusmaci-egitmen", label: "Konuşmacı / Eğitmen Ol" },
+  { value: "marka-isbirligi", label: "Marka / İş Birliği" },
+];
+
+const temsilciSaatSecenekleri: { value: string; label: string }[] = [
+  { value: "0-1", label: "0–1 saat" },
+  { value: "1-3", label: "1–3 saat" },
+  { value: "3-5", label: "3–5 saat" },
+  { value: "5-7", label: "5–7 saat" },
+];
+
+function KvkkBlock({ idSuffix }: { idSuffix: string }) {
+  return (
+    <div className="space-y-4 rounded-xl border-4 border-[#0b1f3f]/20 bg-[#f8fafc] p-4 md:p-5">
+      <p className="text-center text-[12px] font-black uppercase tracking-wide text-[#0038ff]">{BASVURU_KVKK_BASLIK}</p>
+      <div className="max-h-52 overflow-y-auto rounded-lg border-2 border-[#0b1f3f]/15 bg-white p-4 text-[13px] font-medium leading-relaxed text-neutral-800 whitespace-pre-line">
+        {BASVURU_KVKK_METNI}
+      </div>
+      <label className="flex cursor-pointer gap-3 rounded-lg border-2 border-dashed border-[#0b1f3f]/30 bg-white/90 p-3">
+        <input
+          id={`kvkk-onay${idSuffix}`}
+          type="checkbox"
+          name="kvkkAydinlatmaOnay"
+          className="mt-1 h-4 w-4 shrink-0 rounded border-2 border-[#0b1f3f] accent-[#0038ff]"
+          required
+        />
+        <span className="text-[13px] font-semibold leading-snug text-[#0b1f3f]/90">
+          {BASVURU_KVKK_ONAY_METNI} <span className="font-black text-red-600">*</span>
+        </span>
+      </label>
+    </div>
+  );
+}
+
+function GenelBasvuruForm({ idSuffix }: { idSuffix: string }) {
+  return (
+    <div className="space-y-6">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div className="sm:col-span-2">
+          <label htmlFor={`g-ad${idSuffix}`} className={lbl}>
+            Ad Soyad
+            <Req />
+          </label>
+          <input id={`g-ad${idSuffix}`} name="adSoyad" type="text" autoComplete="name" required className={inp} />
+        </div>
+        <div className="sm:col-span-2">
+          <label htmlFor={`g-email${idSuffix}`} className={lbl}>
+            E-posta
+            <Req />
+          </label>
+          <input id={`g-email${idSuffix}`} name="email" type="email" autoComplete="email" required className={inp} />
+        </div>
+        <div className="sm:col-span-2">
+          <label htmlFor={`g-adres${idSuffix}`} className={lbl}>
+            Adres
+            <Req />
+          </label>
+          <textarea id={`g-adres${idSuffix}`} name="adres" rows={3} required className={inp} />
+        </div>
+        <div>
+          <label htmlFor={`g-tel${idSuffix}`} className={lbl}>
+            Telefon numarası
+            <Req />
+          </label>
+          <input id={`g-tel${idSuffix}`} name="telefon" type="tel" autoComplete="tel" required className={inp} />
+        </div>
+        <div>
+          <label htmlFor={`g-il${idSuffix}`} className={lbl}>
+            Yaşadığınız il
+            <Req />
+          </label>
+          <input id={`g-il${idSuffix}`} name="yasadigiIl" type="text" autoComplete="address-level1" required className={inp} />
+        </div>
+        <div className="sm:col-span-2">
+          <label htmlFor={`g-uni${idSuffix}`} className={lbl}>
+            Üniversite ve Bölüm
+            <Req />
+          </label>
+          <input id={`g-uni${idSuffix}`} name="universiteBolum" type="text" required className={inp} />
+        </div>
+      </div>
+
+      <fieldset className="space-y-3 rounded-xl border-4 border-dashed border-[#0b1f3f]/25 bg-white/80 p-4">
+        <legend className={`${lbl} px-1`}>
+          Hangi alanda yer almak sizin için daha uygun?
+          <Req />
+        </legend>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {alanUygunlukSecenekleri.map((o) => (
+            <label
+              key={o.value}
+              className="flex cursor-pointer items-start gap-2 rounded-lg border-2 border-[#0b1f3f]/15 bg-[#f8fafc] p-3 text-[13px] font-semibold leading-snug text-[#0b1f3f] transition hover:border-[#0b1f3f]/40"
+            >
+              <input type="radio" name="alanUygunlugu" value={o.value} required className="mt-0.5 h-4 w-4 shrink-0 border-2 border-[#0b1f3f] accent-[#0038ff]" />
+              <span>{o.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div>
+        <label htmlFor={`g-katki${idSuffix}`} className={lbl}>
+          Bize kendinden ve Aktif Kampüs&apos;e nasıl katkı sağlayabileceğinden bahseder misin?
+          <Req />
+        </label>
+        <textarea id={`g-katki${idSuffix}`} name="katki" rows={5} required className={inp} />
+      </div>
+
+      <KvkkBlock idSuffix={idSuffix} />
+    </div>
+  );
+}
+
+function TemsilciBasvuruForm({ idSuffix }: { idSuffix: string }) {
+  return (
+    <div className="space-y-6">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div className="sm:col-span-2">
+          <label htmlFor={`t-ad${idSuffix}`} className={lbl}>
+            Ad Soyad
+            <Req />
+          </label>
+          <input id={`t-ad${idSuffix}`} name="adSoyad" type="text" autoComplete="name" required className={inp} />
+        </div>
+        <div className="sm:col-span-2">
+          <label htmlFor={`t-email${idSuffix}`} className={lbl}>
+            E-posta
+            <Req />
+          </label>
+          <input id={`t-email${idSuffix}`} name="email" type="email" autoComplete="email" required className={inp} />
+        </div>
+        <div>
+          <label htmlFor={`t-il${idSuffix}`} className={lbl}>
+            Yaşadığınız İl
+            <Req />
+          </label>
+          <input id={`t-il${idSuffix}`} name="yasadigiIl" type="text" required className={inp} />
+        </div>
+        <div>
+          <label htmlFor={`t-tel${idSuffix}`} className={lbl}>
+            Telefon numarası
+          </label>
+          <input id={`t-tel${idSuffix}`} name="telefon" type="tel" autoComplete="tel" className={inp} />
+        </div>
+        <div className="sm:col-span-2">
+          <label htmlFor={`t-uni${idSuffix}`} className={lbl}>
+            Hangi üniversitede temsilcilik yapmak istiyorsun?
+            <Req />
+          </label>
+          <input id={`t-uni${idSuffix}`} name="universiteTemsilcilik" type="text" required className={inp} />
+        </div>
+        <div className="sm:col-span-2">
+          <label htmlFor={`t-bolum${idSuffix}`} className={lbl}>
+            Bölüm ve sınıf düzeyi
+            <Req />
+          </label>
+          <input id={`t-bolum${idSuffix}`} name="bolumSinif" type="text" required className={inp} />
+        </div>
+        <div className="sm:col-span-2">
+          <label htmlFor={`t-neden${idSuffix}`} className={lbl}>
+            Neden Kampüs Temsilcisi Olmak İstiyorsun?
+            <Req />
+          </label>
+          <textarea id={`t-neden${idSuffix}`} name="nedenTemsilci" rows={4} required className={inp} />
+        </div>
+        <div className="sm:col-span-2">
+          <label htmlFor={`t-kulup${idSuffix}`} className={lbl}>
+            Üyesi Olduğunuz Kulüpler
+            <Req />
+          </label>
+          <textarea id={`t-kulup${idSuffix}`} name="kulupUyeligi" rows={3} required className={inp} />
+        </div>
+      </div>
+
+      <fieldset className="space-y-2">
+        <legend className={lbl}>
+          Kampüsünde Daha Önce Etkinlik Düzenledin mi?
+          <Req />
+        </legend>
+        <div className="flex flex-wrap gap-4">
+          <label className="flex items-center gap-2 text-[14px] font-bold text-[#0b1f3f]">
+            <input type="radio" name="etkinlikDuzenledi" value="evet" required className="h-4 w-4 accent-[#0038ff]" />
+            Evet
+          </label>
+          <label className="flex items-center gap-2 text-[14px] font-bold text-[#0b1f3f]">
+            <input type="radio" name="etkinlikDuzenledi" value="hayir" className="h-4 w-4 accent-[#0038ff]" />
+            Hayır
+          </label>
+        </div>
+      </fieldset>
+
+      <div>
+        <label htmlFor={`t-adim${idSuffix}`} className={lbl}>
+          Kampüsünde Aktif Kampüs İçin Hangi Adımları Atabilirsin?
+          <Req />
+        </label>
+        <textarea id={`t-adim${idSuffix}`} name="aktifKampusAdimlari" rows={4} required className={inp} />
+      </div>
+
+      <fieldset className="space-y-2">
+        <legend className={lbl}>
+          Haftalık Kaç Saati Bu Gönüllü Göreve Ayırabilirsin?
+          <Req />
+        </legend>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {temsilciSaatSecenekleri.map((o) => (
+            <label
+              key={o.value}
+              className="flex cursor-pointer items-center gap-2 rounded-lg border-2 border-[#0b1f3f]/15 bg-white p-3 text-[13px] font-bold text-[#0b1f3f]"
+            >
+              <input type="radio" name="haftalikSaat" value={o.value} required className="h-4 w-4 accent-[#0038ff]" />
+              {o.label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div>
+        <label htmlFor={`t-sosyal${idSuffix}`} className={lbl}>
+          Sosyal Medya Hesapların / Portfolyon
+          <Req />
+        </label>
+        <textarea id={`t-sosyal${idSuffix}`} name="sosyalMedyaPortfoy" rows={3} required className={inp} placeholder="@kullanıcı veya bağlantılar" />
+      </div>
+
+      <KvkkBlock idSuffix={idSuffix} />
+    </div>
+  );
+}
+
+function BasitBasvuruForm({ idSuffix, meta }: { idSuffix: string; meta: BasvuruTurMeta }) {
+  return (
+    <div className="space-y-6">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div className="sm:col-span-2">
+          <label htmlFor={`s-ad${idSuffix}`} className={lbl}>
+            Ad soyad
+            <Req />
+          </label>
+          <input id={`s-ad${idSuffix}`} name="adSoyad" type="text" autoComplete="name" required className={inp} />
+        </div>
+        <div>
+          <label htmlFor={`s-email${idSuffix}`} className={lbl}>
+            E-posta
+            <Req />
+          </label>
+          <input id={`s-email${idSuffix}`} name="email" type="email" autoComplete="email" required className={inp} />
+        </div>
+        <div>
+          <label htmlFor={`s-uni${idSuffix}`} className={lbl}>
+            Üniversite <span className="font-semibold normal-case text-[#0b1f3f]/50">(isteğe bağlı)</span>
+          </label>
+          <input id={`s-uni${idSuffix}`} name="universite" type="text" autoComplete="organization" className={inp} />
+        </div>
+        <div className="sm:col-span-2">
+          <label htmlFor={`s-mesaj${idSuffix}`} className={lbl}>
+            Mesaj
+            <Req />
+          </label>
+          <textarea id={`s-mesaj${idSuffix}`} name="mesaj" rows={5} required placeholder={meta.mesajPlaceholder} className={inp} />
+        </div>
+      </div>
+      <KvkkBlock idSuffix={idSuffix} />
+    </div>
+  );
+}
+
+export type BasvuruPageContentProps = {
+  variant: BasvuruTur;
+};
+
+export function BasvuruPageContent({ variant }: BasvuruPageContentProps) {
+  const meta = basvuruTurMeta[variant];
+  const idSuffix = `-${variant}`;
 
   return (
     <div className="flex w-full flex-col">
@@ -42,23 +320,26 @@ export function BasvuruPageContent() {
       >
         <div className={`${inner} relative`}>
           <p className="text-[11px] font-black uppercase tracking-[0.3em] text-[#e8ff66] [text-shadow:0_1px_3px_rgba(0,0,0,0.5)] md:text-[12px]">
-            Başvuru
+            {meta.heroEyebrow}
           </p>
           <h1
             className="mx-auto mt-4 max-w-4xl text-[clamp(2rem,6.5vw,3.5rem)] font-black uppercase leading-[0.92] tracking-tighter text-white md:mt-5"
             style={titleStyle}
           >
-            Başvuru yap
+            <span className="block text-white">{meta.heroTitle}</span>
+            <span className="mt-1 block text-[#CCFF00]" style={titleStyle}>
+              {meta.heroTitleAccent}
+            </span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-[16px] font-semibold leading-relaxed text-white/95 [text-shadow:0_2px_14px_rgba(0,0,0,0.4)] md:text-lg">
-            Talebini seç; ekibimiz en kısa sürede dönüş yapsın. Form ön kayıt içindir, kesin kayıt için sana yönlendirme yapılır.
+            {meta.heroSubtitle}
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 md:mt-10">
             <a
-              href="/etkinlikler"
+              href="/basvuru"
               className="inline-flex min-h-[48px] items-center justify-center rounded-full border-2 border-white/75 bg-white/12 px-8 py-3 text-[15px] font-bold text-white shadow-[0_4px_20px_rgba(0,0,0,0.2)] backdrop-blur-md transition hover:bg-white/22"
             >
-              Etkinlikler
+              Tüm başvuru türleri
             </a>
             <a
               href="/kurumsal/iletisim"
@@ -72,7 +353,7 @@ export function BasvuruPageContent() {
       </motion.section>
 
       <section
-        aria-labelledby="basvuru-form-baslik"
+        aria-labelledby={`basvuru-form-baslik${idSuffix}`}
         className="relative z-[1] -mt-10 w-full overflow-hidden rounded-t-[2rem] bg-gradient-to-b from-white via-[#e8eefc] to-[#f0f5ff] pb-16 pt-14 shadow-[0_-28px_80px_rgba(0,56,255,0.18)] md:-mt-14 md:rounded-t-[3rem] md:pb-24 md:pt-20"
       >
         <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-[#CCFF00]/28 blur-3xl" />
@@ -85,18 +366,15 @@ export function BasvuruPageContent() {
             aria-hidden
           />
           <h2
-            id="basvuru-form-baslik"
+            id={`basvuru-form-baslik${idSuffix}`}
             className="text-[clamp(1.5rem,4vw,2.25rem)] font-black uppercase leading-tight tracking-tight text-[#0b1f3f]"
           >
-            <span style={titleStyleOnLightPrimary}>Başvuru türü</span>
+            <span style={titleStyleOnLightPrimary}>Başvuru</span>
             <span className="mt-1 block text-[#CCFF00]" style={titleStyle}>
-              ve form
+              formu
             </span>
           </h2>
-          <p className="mt-6 max-w-2xl text-[15px] font-medium leading-relaxed text-neutral-800 md:text-[16px]">
-            Aşağıdan türünü seçip mesajını gönder; URL&apos;deki{" "}
-            <span className="font-semibold text-[#0b1f3f]">?tur=</span> parametresi otomatik eşlenir.
-          </p>
+          <p className="mt-6 max-w-2xl text-[15px] font-medium leading-relaxed text-neutral-800 md:text-[16px]">{meta.formIntro}</p>
 
           <form
             className="mt-10 max-w-3xl space-y-6 md:mt-12"
@@ -104,89 +382,12 @@ export function BasvuruPageContent() {
               e.preventDefault();
             }}
           >
-            <div>
-              <label htmlFor="basvuru-tur" className="block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]">
-                Başvuru türü
-              </label>
-              <select
-                id="basvuru-tur"
-                name="tur"
-                value={tur}
-                onChange={(e) => setTur(e.target.value)}
-                className="mt-2 w-full rounded-xl border-4 border-[#0b1f3f] bg-white px-4 py-3.5 text-[15px] font-bold text-[#0b1f3f] shadow-[4px_4px_0_#0b1f3f] outline-none focus:ring-2 focus:ring-[#0038ff]"
-              >
-                {turOptions.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {o.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <input type="hidden" name="tur" value={variant} />
 
-            <div className="grid gap-5 sm:grid-cols-2">
-              <div className="sm:col-span-2">
-                <label htmlFor="basvuru-ad" className="block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]">
-                  Ad soyad
-                </label>
-                <input
-                  id="basvuru-ad"
-                  name="adSoyad"
-                  type="text"
-                  autoComplete="name"
-                  required
-                  placeholder="Örn. Ayşe Yılmaz"
-                  className="mt-2 w-full rounded-xl border-4 border-[#0b1f3f] bg-white px-4 py-3.5 text-[15px] font-bold text-[#0b1f3f] placeholder:text-neutral-400 shadow-[4px_4px_0_#0b1f3f] outline-none focus:ring-2 focus:ring-[#0038ff]"
-                />
-              </div>
-              <div>
-                <label htmlFor="basvuru-email" className="block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]">
-                  E-posta
-                </label>
-                <input
-                  id="basvuru-email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  placeholder="ornek@edu.tr"
-                  className="mt-2 w-full rounded-xl border-4 border-[#0b1f3f] bg-white px-4 py-3.5 text-[15px] font-bold text-[#0b1f3f] placeholder:text-neutral-400 shadow-[4px_4px_0_#0b1f3f] outline-none focus:ring-2 focus:ring-[#0038ff]"
-                />
-              </div>
-              <div>
-                <label htmlFor="basvuru-uni" className="block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]">
-                  Üniversite <span className="font-semibold normal-case text-[#0b1f3f]/50">(isteğe bağlı)</span>
-                </label>
-                <input
-                  id="basvuru-uni"
-                  name="universite"
-                  type="text"
-                  autoComplete="organization"
-                  placeholder="Kampüs adı"
-                  className="mt-2 w-full rounded-xl border-4 border-[#0b1f3f] bg-white px-4 py-3.5 text-[15px] font-bold text-[#0b1f3f] placeholder:text-neutral-400 shadow-[4px_4px_0_#0b1f3f] outline-none focus:ring-2 focus:ring-[#0038ff]"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="basvuru-mesaj" className="block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]">
-                Mesaj
-              </label>
-              <textarea
-                id="basvuru-mesaj"
-                name="mesaj"
-                rows={5}
-                required
-                placeholder="Kısaca talebini yaz: kulüp adı, iş birliği fikri veya temsilcilik motivasyonun…"
-                className="mt-2 w-full resize-y rounded-xl border-4 border-[#0b1f3f] bg-white px-4 py-3.5 text-[15px] font-semibold leading-relaxed text-[#0b1f3f] placeholder:text-neutral-400 shadow-[4px_4px_0_#0b1f3f] outline-none focus:ring-2 focus:ring-[#0038ff]"
-              />
-            </div>
-
-            <label className="flex cursor-pointer gap-3 rounded-xl border-2 border-dashed border-[#0b1f3f]/35 bg-white/90 px-4 py-4">
-              <input type="checkbox" name="kvkk" className="mt-0.5 h-4 w-4 shrink-0 rounded border-2 border-[#0b1f3f] accent-[#0038ff]" required />
-              <span className="text-[13px] font-semibold leading-snug text-[#0b1f3f]/85">
-                İletişim ve başvuru bilgilerimin işlenmesine ilişkin bilgilendirmeyi okudum, onaylıyorum.
-              </span>
-            </label>
+            {variant === "genel" ? <GenelBasvuruForm idSuffix={idSuffix} /> : null}
+            {variant === "temsilci" ? <TemsilciBasvuruForm idSuffix={idSuffix} /> : null}
+            {variant === "kulup" ? <BasitBasvuruForm idSuffix={idSuffix} meta={basvuruTurMeta.kulup} /> : null}
+            {variant === "is-birligi" ? <BasitBasvuruForm idSuffix={idSuffix} meta={basvuruTurMeta["is-birligi"]} /> : null}
 
             <button
               type="submit"

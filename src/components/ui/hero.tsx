@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { footerColumns, mainNav } from "@/data/site-nav";
+import { basvuruTurleri, basvuruTurLabels } from "@/data/basvuru-config";
 import {
   ArrowRight,
   Award,
@@ -24,7 +25,6 @@ import {
   Newspaper,
   Plane,
   FileText,
-  Send,
   User,
   Users,
   UsersRound,
@@ -282,24 +282,30 @@ const ArrowGreenRight = () => (
 );
 
 const CircularBadge = () => (
-  <div className="relative flex h-28 w-28 rotate-12 cursor-pointer items-center justify-center rounded-full border-[3px] border-black/5 bg-[#CCFF00] shadow-xl transition-transform hover:scale-105 md:h-36 md:w-36">
-    <div className="absolute inset-1 animate-[spin_10s_linear_infinite]">
-      <svg viewBox="0 0 100 100" className="h-full w-full">
-        <path id="circlePath" d="M 50, 50 m -36, 0 a 36,36 0 1,1 72,0 a 36,36 0 1,1 -72,0" fill="none" />
-        <text className="text-[9px] font-black uppercase tracking-[0.14em] md:text-[11px] md:tracking-[0.18em]" fill="black">
-          <textPath href="#circlePath" startOffset="0%">
-            AKTİF KAMPÜS • HEMEN KATIL • AKTİF KAMPÜS • HEMEN KATIL •{" "}
-          </textPath>
-        </text>
-      </svg>
+  <a
+    href="/basvuru/genel"
+    aria-label="Genel başvuru formuna git"
+    className="inline-flex rounded-full focus:outline-none focus-visible:ring-4 focus-visible:ring-[#CCFF00]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#2258dc]"
+  >
+    <div className="relative flex h-28 w-28 rotate-12 cursor-pointer items-center justify-center rounded-full border-[3px] border-black/5 bg-[#CCFF00] shadow-xl transition-transform hover:scale-105 md:h-36 md:w-36">
+      <div className="absolute inset-1 animate-[spin_10s_linear_infinite]">
+        <svg viewBox="0 0 100 100" className="h-full w-full">
+          <path id="circlePath" d="M 50, 50 m -36, 0 a 36,36 0 1,1 72,0 a 36,36 0 1,1 -72,0" fill="none" />
+          <text className="text-[9px] font-black uppercase tracking-[0.14em] md:text-[11px] md:tracking-[0.18em]" fill="black">
+            <textPath href="#circlePath" startOffset="0%">
+              AKTİF KAMPÜS • HEMEN KATIL • AKTİF KAMPÜS • HEMEN KATIL •{" "}
+            </textPath>
+          </text>
+        </svg>
+      </div>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <svg viewBox="0 0 100 100" className="h-10 w-10 overflow-visible stroke-current text-black" fill="none" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20,80 Q 40,50 30,30 T 80,20" />
+          <path d="M60,10 L80,20 L70,40" />
+        </svg>
+      </div>
     </div>
-    <div className="absolute inset-0 flex items-center justify-center">
-      <svg viewBox="0 0 100 100" className="h-10 w-10 overflow-visible stroke-current text-black" fill="none" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20,80 Q 40,50 30,30 T 80,20" />
-        <path d="M60,10 L80,20 L70,40" />
-      </svg>
-    </div>
-  </div>
+  </a>
 );
 
 const titleStyle: React.CSSProperties = {
@@ -612,7 +618,7 @@ export const Component = () => {
               Etkinliklere göz at
             </a>
             <a
-              href="/kampus/temsilcilik"
+              href="/basvuru/temsilci"
               className="inline-flex min-h-[44px] items-center justify-center rounded-full border-2 border-white/70 bg-white/20 px-7 py-2.5 text-[14px] font-bold leading-none text-white shadow-[0_2px_12px_rgba(0,0,0,0.2)] backdrop-blur-md transition hover:bg-white/30 active:scale-[0.98] md:min-h-[48px] md:px-9 md:text-[15px]"
             >
               Temsilci ol
@@ -792,7 +798,7 @@ export const Component = () => {
                   </div>
                 </div>
                 <a
-                  href="#"
+                  href="/basvuru/genel"
                   className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#CCFF00] px-6 py-3 text-[13px] font-black uppercase tracking-wide text-neutral-950 shadow-lg transition hover:brightness-105"
                 >
                   Başvuru
@@ -1548,7 +1554,7 @@ export const Component = () => {
                 </span>
               </h2>
               <p className="mt-5 max-w-xl text-[15px] font-bold leading-relaxed text-white/80">
-                Etkinlikten temsilciliğe tüm taleplerini buradan ilet; ekibimiz başvuru türüne göre yönlendirir. Aşağıdan türü seç, ileti bilgilerini bırak — geri dönüş kampüs takvimine göre planlanır.
+                Her başvuru türünün kendi form sayfası var. Sağdaki kartlardan türünü seç; ön kayıt ve yönlendirme aynı akışla devam eder.
               </p>
 
               <div className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -1584,111 +1590,32 @@ export const Component = () => {
               className="relative rounded-[2rem] border-4 border-[#0b1f3f] bg-white p-6 shadow-[12px_12px_0_#0038ff] md:p-9"
             >
               <div className="pointer-events-none absolute -right-3 -top-3 h-14 w-14 rounded-full border-4 border-[#0b1f3f] bg-[#CCFF00]" />
-              <p className="text-[13px] font-black uppercase tracking-wide text-[#0038ff]">Başvuru formu</p>
+              <p className="text-[13px] font-black uppercase tracking-wide text-[#0038ff]">Başvuru formları</p>
               <p className="mt-2 text-[13px] font-semibold text-[#0b1f3f]/75">
-                Alanları doldur; gönderim şimdilik önizleme — canlı sitede e-posta veya CRM ile bağlanır.
+                Türüne göre ayrı sayfa açılır; gönderim ön kayıt içindir — ekibimiz geri döner.
               </p>
 
-              <form
-                className="mt-8 space-y-5"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                }}
+              <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+                {basvuruTurleri.map((tur) => (
+                  <li key={tur}>
+                    <a
+                      href={`/basvuru/${tur}`}
+                      className="flex min-h-[3.25rem] items-center justify-between gap-2 rounded-xl border-4 border-[#0b1f3f] bg-[#f8fafc] px-3 py-2.5 text-left text-[12px] font-black uppercase leading-snug tracking-wide text-[#0b1f3f] shadow-[4px_4px_0_#0b1f3f] transition hover:bg-white hover:shadow-[2px_2px_0_#0b1f3f] sm:text-[11px]"
+                    >
+                      <span className="min-w-0">{basvuruTurLabels[tur]}</span>
+                      <ArrowRight className="h-4 w-4 shrink-0 opacity-80" aria-hidden />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href="/basvuru"
+                className="mt-6 inline-flex w-full min-h-[48px] items-center justify-center gap-2 rounded-2xl border-4 border-dashed border-[#0b1f3f]/35 bg-white px-4 py-3 text-[13px] font-black uppercase tracking-wide text-[#0b1f3f] transition hover:border-[#0b1f3f]/55 hover:bg-[#f8fafc]"
               >
-                <div>
-                  <label htmlFor="basvuru-tur" className="block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]">
-                    Başvuru türü
-                  </label>
-                  <select
-                    id="basvuru-tur"
-                    name="tur"
-                    className="mt-2 w-full rounded-xl border-4 border-[#0b1f3f] bg-[#f8fafc] px-4 py-3 text-[14px] font-bold text-[#0b1f3f] shadow-[4px_4px_0_#0b1f3f] outline-none transition focus:bg-white focus:ring-2 focus:ring-[#0038ff]"
-                    defaultValue=""
-                    required
-                  >
-                    <option value="" disabled>
-                      Seçin…
-                    </option>
-                    <option value="etkinlik">Etkinlik kaydı</option>
-                    <option value="temsilcilik">Temsilcilik başvurusu</option>
-                    <option value="kulupler">Kulüp & iş birliği</option>
-                    <option value="bulten">Bülten & duyuru</option>
-                    <option value="diger">Diğer / genel</option>
-                  </select>
-                </div>
-
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <div className="sm:col-span-2">
-                    <label htmlFor="basvuru-ad" className="block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]">
-                      Ad soyad
-                    </label>
-                    <input
-                      id="basvuru-ad"
-                      name="adSoyad"
-                      type="text"
-                      autoComplete="name"
-                      required
-                      placeholder="Örn. Ayşe Yılmaz"
-                      className="mt-2 w-full rounded-xl border-4 border-[#0b1f3f] bg-[#f8fafc] px-4 py-3 text-[14px] font-bold text-[#0b1f3f] placeholder:text-neutral-400 shadow-[4px_4px_0_#0b1f3f] outline-none transition focus:bg-white focus:ring-2 focus:ring-[#0038ff]"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="basvuru-email" className="block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]">
-                      E-posta
-                    </label>
-                    <input
-                      id="basvuru-email"
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      required
-                      placeholder="ornek@edu.tr"
-                      className="mt-2 w-full rounded-xl border-4 border-[#0b1f3f] bg-[#f8fafc] px-4 py-3 text-[14px] font-bold text-[#0b1f3f] placeholder:text-neutral-400 shadow-[4px_4px_0_#0b1f3f] outline-none transition focus:bg-white focus:ring-2 focus:ring-[#0038ff]"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="basvuru-uni" className="block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]">
-                      Üniversite <span className="font-semibold normal-case text-[#0b1f3f]/50">(isteğe bağlı)</span>
-                    </label>
-                    <input
-                      id="basvuru-uni"
-                      name="universite"
-                      type="text"
-                      autoComplete="organization"
-                      placeholder="Kampüs adı"
-                      className="mt-2 w-full rounded-xl border-4 border-[#0b1f3f] bg-[#f8fafc] px-4 py-3 text-[14px] font-bold text-[#0b1f3f] placeholder:text-neutral-400 shadow-[4px_4px_0_#0b1f3f] outline-none transition focus:bg-white focus:ring-2 focus:ring-[#0038ff]"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="basvuru-mesaj" className="block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]">
-                    Mesaj
-                  </label>
-                  <textarea
-                    id="basvuru-mesaj"
-                    name="mesaj"
-                    rows={4}
-                    placeholder="Kısaca talebini yaz: etkinlik adı, kulüp adı veya iletişim nedeni…"
-                    className="mt-2 w-full resize-y rounded-xl border-4 border-[#0b1f3f] bg-[#f8fafc] px-4 py-3 text-[14px] font-semibold leading-relaxed text-[#0b1f3f] placeholder:text-neutral-400 shadow-[4px_4px_0_#0b1f3f] outline-none transition focus:bg-white focus:ring-2 focus:ring-[#0038ff]"
-                  />
-                </div>
-
-                <label className="flex cursor-pointer gap-3 rounded-xl border-2 border-dashed border-[#0b1f3f]/35 bg-[#f8fafc]/80 px-4 py-3">
-                  <input type="checkbox" name="kvkk" className="mt-0.5 h-4 w-4 shrink-0 rounded border-2 border-[#0b1f3f] accent-[#0038ff]" required />
-                  <span className="text-[12px] font-semibold leading-snug text-[#0b1f3f]/85">
-                    İletişim ve başvuru bilgilerimin işlenmesine ilişkin bilgilendirmeyi okudum, onaylıyorum.
-                  </span>
-                </label>
-
-                <button
-                  type="submit"
-                  className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border-4 border-[#0b1f3f] bg-[#CCFF00] py-3.5 text-[14px] font-black uppercase tracking-wide text-[#0b1f3f] shadow-[6px_6px_0_#0b1f3f] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_#0b1f3f]"
-                >
-                  <Send className="h-4 w-4 shrink-0" aria-hidden />
-                  Gönder
-                </button>
-              </form>
+                Tüm türler — başvuru merkezi
+                <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
+              </a>
             </motion.div>
           </div>
 

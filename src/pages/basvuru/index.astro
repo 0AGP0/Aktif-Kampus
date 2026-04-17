@@ -1,13 +1,13 @@
 ---
 import SitePageLayout from "@/layouts/SitePageLayout.astro";
-import { BasvuruPageContent } from "@/components/pages/BasvuruPageContent";
+import { BasvuruHubContent } from "@/components/pages/BasvuruHubContent";
 ---
 
 <SitePageLayout
-  title="Başvuru Yap"
-  description="Genel, temsilci, kulüp ve iş birliği başvuruları."
-  currentPath="/basvuru"
+  title="Başvuru türü ve form | Aktif Kampüs"
+  description="Genel, temsilci, kulüp ve iş birliği başvuruları — tür seçerek ilgili forma geç."
+  currentPath={Astro.url.pathname}
   contentBleed
 >
-  <BasvuruPageContent client:load />
+  <BasvuruHubContent client:load />
 </SitePageLayout>

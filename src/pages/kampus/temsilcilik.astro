@@ -1,4 +1,4 @@
-﻿---
+---
 import SitePageLayout from "@/layouts/SitePageLayout.astro";
 import { LandingPageTemplate } from "@/components/templates/LandingPageTemplate";
 
@@ -48,13 +48,13 @@ const sections = [
       { label: "Kampüs etkinliği", value: "300+" },
       { label: "Ortalama dönem", value: "12 hafta" },
     ]}
-    heroCta={{ label: "Başvuru yap", href: "/basvuru?tur=temsilci" }}
+    heroCta={{ label: "Başvuru yap", href: "/basvuru/temsilci" }}
     heroSecondaryCta={{ label: "Kampüs sayfası", href: "/kampus" }}
     sections={sections}
     closing={{
       title: "Başvuru çağrısı",
       body: "Formu doldur; ekip sana dönüş yapsın.",
-      cta: { label: "Temsilci başvurusu", href: "/basvuru?tur=temsilci" },
+      cta: { label: "Temsilci başvurusu", href: "/basvuru/temsilci" },
     }}
   />
 </SitePageLayout>
