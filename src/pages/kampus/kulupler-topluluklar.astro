@@ -1,0 +1,65 @@
+﻿---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { LandingPageTemplate } from "@/components/templates/LandingPageTemplate";
+
+const img =
+  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=85";
+
+const sections = [
+  {
+    kind: "intro" as const,
+    title: "Kulüpler ve topluluklar",
+    body: "Ortak etkinlik, içerik ve sponsorluk modelleri üretiyoruz; kulüp yönetimi ve üyeler için görünürlük sağlıyoruz.",
+    tags: ["Ortak etkinlik", "Sponsorluk", "İçerik"],
+  },
+  {
+    kind: "bullets" as const,
+    title: "Neden iş birliği?",
+    items: ["Üye deneyimini zenginleştirme", "Kampüs içi ve dışı görünürlük", "Ölçülebilir etki ve raporlama"],
+  },
+  {
+    kind: "model" as const,
+    title: "Çalışma modeli",
+    body: "Kulübün hedefi ve takvimine göre esnek paketler; tek temas noktası ve net teslim tarihleri.",
+    steps: [
+      "Kulüp profili ve hedef etkinliklerin netleştirilmesi",
+      "Ortak program veya sponsorluk yolunun seçilmesi",
+      "Yürütme, iletişim ve dönem değerlendirmesi",
+    ],
+  },
+  {
+    kind: "split" as const,
+    title: "Ortak üretim",
+    body: "Atölye, panel ve sosyal etki projeleri kampüs takvimine entegre edilir; duyuru ve kayıt süreçlerinde yanınızdayız.",
+    image: img,
+    imageAlt: "Kulüp çalışması",
+  },
+];
+---
+
+<SitePageLayout
+  title="Kulüpler / Topluluklar"
+  description="Kulüpler için ortak etkinlik ve iş birliği — Aktif Kampüs."
+  currentPath="/kampus/kulupler-topluluklar"
+  contentBleed
+>
+  <LandingPageTemplate
+    client:load
+    heroEyebrow="Kampüs"
+    heroTitle="Kulüpler ve topluluklar"
+    heroSubtitle="Kulüp yönetimi ve üyeler için ortak etkinlik, sponsor ve içerik modelleri."
+    heroStats={[
+      { label: "Kulüp partneri", value: "80+" },
+      { label: "Ortak proje", value: "150+" },
+      { label: "Şehir kapsaması", value: "20+" },
+    ]}
+    heroCta={{ label: "Kulüp başvurusu", href: "/basvuru?tur=kulup" }}
+    heroSecondaryCta={{ label: "Kampüs sayfası", href: "/kampus" }}
+    sections={sections}
+    closing={{
+      title: "Başvuru çağrısı",
+      body: "Kulübünü ve hedefini anlat; birlikte planlayalım.",
+      cta: { label: "Kulüp başvurusu", href: "/basvuru?tur=kulup" },
+    }}
+  />
+</SitePageLayout>

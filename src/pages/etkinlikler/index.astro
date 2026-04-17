@@ -1,0 +1,22 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { ListPageTemplate } from "@/components/templates/ListPageTemplate";
+import { events } from "@/data/site-content";
+---
+
+<SitePageLayout
+  title="Etkinlikler"
+  description="Yaklaşan ve online etkinlikleri filtreleyerek keşfet."
+  currentPath="/etkinlikler"
+  contentBleed
+  mainFooterGap
+>
+  <ListPageTemplate
+    client:load
+    variant="events"
+    title="Etkinlikler"
+    description="Tek listede tüm etkinlikler — tarih, ortam ve kategoriye göre süz. Yaklaşan ve online oturumlar için ön kayıt fırsatlarını kaçırma."
+    items={events}
+    detailPath="/etkinlikler"
+  />
+</SitePageLayout>

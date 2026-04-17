@@ -1,0 +1,44 @@
+---
+import Layout from "./Layout.astro";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
+
+interface Props {
+  title: string;
+  /** Tarayıcı sekmesi + SEO */
+  description?: string;
+  /** SiteHeader aktif yol eşlemesi */
+  currentPath?: string;
+  /** Ana içerik tam genişlik (landing / başvuru gibi kenar boşluğu istenmeyen sayfalar) */
+  contentBleed?: boolean;
+  /**
+   * contentBleed açıkken bile main altında footer öncesi boşluk (normal sayfalardaki pb ile aynı).
+   * Liste indeksleri gibi sayfalar için true verin; bitişik footer isteyen landing’lerde false kalsın.
+   */
+  mainFooterGap?: boolean;
+}
+
+const { title, description, currentPath = "", contentBleed = false, mainFooterGap = false } = Astro.props as Props;
+const fullTitle = title.includes("Aktif") ? title : `${title} | Aktif Kampüs`;
+---
+
+<Layout title={fullTitle} description={description}>
+  <div id="top" class="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-gradient-to-br from-[#2a62e8] via-[#2258dc] to-[#1848c4] font-sans selection:bg-[#CCFF00] selection:text-black">
+    <div class="pointer-events-none fixed inset-0 z-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true"></div>
+    <SiteHeader client:load currentPath={currentPath} />
+    <main
+      class:list={[
+        "relative z-10 flex-1 pt-2 md:pt-4",
+        contentBleed
+          ? [
+              "px-0",
+              mainFooterGap ? "pb-16 md:pb-24" : "pb-0 md:pb-0",
+            ]
+          : "px-3 pb-16 sm:px-4 md:px-6 md:pb-24",
+      ]}
+    >
+      <slot />
+    </main>
+    <SiteFooter />
+  </div>
+</Layout>

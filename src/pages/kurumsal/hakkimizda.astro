@@ -1,0 +1,64 @@
+﻿---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { LandingPageTemplate } from "@/components/templates/LandingPageTemplate";
+
+const imgHakkimizda =
+  "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=85";
+
+const sections = [
+  {
+    kind: "intro" as const,
+    title: "Platform ne sunuyor?",
+    body: "Öğrencileri, kulüpleri ve programları tek çatı altında buluşturan bir topluluk altyapısı sunuyoruz. Seminerlerden dil kurslarına, yurtdışı oturumlarından kampüs temsilciliğine kadar içerikler tek yerde toplanır.",
+    tags: ["Şeffaf süreç", "Kampüs ağı", "Öğrenci önceliği"],
+  },
+  {
+    kind: "bullets" as const,
+    title: "Temel avantajlar",
+    items: [
+      "Kampüsler arası görünür ve ölçülebilir etki",
+      "Kulüp ve partner ekosistemiyle uyumlu süreçler",
+      "Öğrenci odaklı, şeffaf iletişim",
+    ],
+  },
+  {
+    kind: "model" as const,
+    title: "Çalışma modeli",
+    body: "İçerik, etkinlik ve iş birliklerini aynı çatıda yönetiriz; her kampüs için tekrarlanabilir ama esnek bir çerçeve kullanırız.",
+    steps: [
+      "Kampüs ve kulüp ihtiyaçlarının dinlenmesi",
+      "Takvim ve kanalların (duyuru, kayıt, geri bildirim) netleştirilmesi",
+      "Yürütme, ölçüm ve dönem sonu değerlendirme",
+    ],
+  },
+  {
+    kind: "split" as const,
+    title: "Vizyon ve misyon",
+    body: "Vizyonumuz: eşit erişim ve kampüsler arası paylaşımı güçlendirmek. Misyonumuz: güvenilir içerik ve ölçülebilir iş birlikleriyle öğrenci topluluklarını desteklemek.",
+    image: imgHakkimizda,
+    imageAlt: "Kampüste bir araya gelen öğrenciler",
+  },
+];
+---
+
+<SitePageLayout title="Hakkımızda" description="Aktif Kampüs vizyon, misyon ve çalışma modeli." currentPath="/kurumsal/hakkimizda" contentBleed>
+  <LandingPageTemplate
+    client:load
+    heroEyebrow="Kurumsal"
+    heroTitle="Hakkımızda"
+    heroSubtitle="Öğrenci toplulukları için şeffaf, bağlantılı ve sürdürülebilir bir gelişim platformu."
+    heroStats={[
+      { label: "Partner ekosistemi", value: "40+" },
+      { label: "İçerik ve rehber", value: "200+" },
+      { label: "Aktif şehir", value: "15+" },
+    ]}
+    heroCta={{ label: "İletişim", href: "/kurumsal/iletisim" }}
+    heroSecondaryCta={{ label: "SSS", href: "/kurumsal/sss" }}
+    sections={sections}
+    closing={{
+      title: "Birlikte büyüyelim",
+      body: "Kulübün veya kurumunla iş birliği için bize ulaş.",
+      cta: { label: "İletişime geç", href: "/kurumsal/iletisim" },
+    }}
+  />
+</SitePageLayout>

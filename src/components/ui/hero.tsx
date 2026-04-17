@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import { footerColumns, mainNav } from "@/data/site-nav";
 import {
   ArrowRight,
   Award,
@@ -136,58 +137,6 @@ const basvuruKatilimTurleri: { baslik: string; aciklama: string; icon: LucideIco
     baslik: "Bülten & duyuru",
     aciklama: "Yeni içerik, fırsat ve kampüs duyurularından haberdar ol.",
     icon: Megaphone,
-  },
-];
-
-/** Footer içerik haritası — yeni sayfa: ilgili grubun `linkler` dizisine { href, label } ekle */
-const footerIcerikHaritasi: { baslik: string; linkler: { href: string; label: string }[] }[] = [
-  {
-    baslik: "Etkinlik & kampüs",
-    linkler: [
-      { href: "#yaklasan-etkinlikler", label: "Yaklaşan etkinlikler" },
-      { href: "#konusmacilar", label: "Konuşmacılar" },
-      { href: "#temsilcilik-ve-kulupler", label: "Temsilcilik & kulüpler" },
-      { href: "#", label: "Etkinlik arşivi" },
-      { href: "#", label: "Kampüs turları" },
-    ],
-  },
-  {
-    baslik: "Programlar",
-    linkler: [
-      { href: "#dil-yurtdisi", label: "Dil & yurtdışı" },
-      { href: "#is-birligi", label: "İş birliği" },
-      { href: "#", label: "Sertifika programları" },
-      { href: "#", label: "Kulüp ortaklıkları" },
-      { href: "#", label: "Online oturumlar" },
-    ],
-  },
-  {
-    baslik: "İçerik",
-    linkler: [
-      { href: "#blog-rehber", label: "Blog & rehber" },
-      { href: "#", label: "Rehber arşivi" },
-      { href: "#", label: "Duyurular" },
-      { href: "#", label: "Podcast / video" },
-    ],
-  },
-  {
-    baslik: "Katılım",
-    linkler: [
-      { href: "#basvuru-katilim", label: "Başvuru formu" },
-      { href: "#", label: "Bültene kayıt" },
-      { href: "#", label: "Gönüllülük" },
-      { href: "#", label: "Marka iş birliği" },
-    ],
-  },
-  {
-    baslik: "Kurumsal",
-    linkler: [
-      { href: "#hakkimizda", label: "Hakkımızda" },
-      { href: "#footer", label: "İletişim" },
-      { href: "#", label: "Basın & medya" },
-      { href: "#", label: "Kariyer" },
-      { href: "#", label: "SSS" },
-    ],
   },
 ];
 
@@ -401,7 +350,7 @@ const HeroFloatCard = ({ image, imageAlt, eyebrow, line, stat, statSuffix = "+",
 /** Logo — neo-brutalist kutu + DM Sans wordmark (menü ile aynı aile) */
 const HeaderNavBrand = () => (
   <a
-    href="#top"
+    href="/"
     className="group flex shrink-0 items-center gap-2 sm:gap-2.5"
     aria-label="Aktif Kampüs — ana sayfa"
   >
@@ -466,63 +415,67 @@ export const Component = () => {
                 aria-label="Site ağacı"
               >
                 <div className="flex min-w-0 flex-1 flex-wrap items-center justify-end gap-1 rounded-xl border-2 border-[#0b1f3f] bg-[#f8fafc] px-1.5 py-1 shadow-[3px_3px_0_rgba(11,31,63,0.12)] sm:gap-1.5 sm:px-2">
-                  {footerIcerikHaritasi.map((grup) => (
-                    <div key={grup.baslik} className="relative">
-                      <button
-                        type="button"
-                        className={`inline-flex max-w-[12rem] items-center gap-1 rounded-lg border-2 border-transparent px-3 py-2 text-left text-[15px] font-medium leading-normal tracking-[0.01em] transition sm:max-w-[14rem] xl:max-w-none ${
-                          navDropdown === grup.baslik
-                            ? "border-[#0b1f3f] bg-[#CCFF00] font-semibold shadow-[2px_2px_0_#0b1f3f]"
-                            : "hover:border-[#0b1f3f]/25 hover:bg-white"
-                        }`}
-                        aria-expanded={navDropdown === grup.baslik}
-                        aria-haspopup="true"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setNavDropdown((d) => (d === grup.baslik ? null : grup.baslik));
-                        }}
+                  {mainNav.map((entry) =>
+                    entry.kind === "link" ? (
+                      <a
+                        key={entry.href}
+                        href={entry.href}
+                        className="rounded-lg border-2 border-transparent px-2.5 py-2 font-sans text-[14px] font-medium leading-normal tracking-[0.01em] transition hover:border-[#0b1f3f]/25 hover:bg-white xl:px-3 xl:text-[15px]"
                       >
-                        <span className="min-w-0 truncate xl:whitespace-normal">{grup.baslik}</span>
-                        <ChevronDown
-                          className={`h-4 w-4 shrink-0 opacity-70 transition ${navDropdown === grup.baslik ? "rotate-180" : ""}`}
-                          aria-hidden
-                        />
-                      </button>
-                      {navDropdown === grup.baslik ? (
-                        <div
-                          className="absolute left-0 top-[calc(100%+8px)] z-[100] min-w-[min(17rem,calc(100vw-2rem))] rounded-xl border-4 border-[#0b1f3f] bg-white py-2 shadow-[6px_6px_0_rgba(11,31,63,0.2)]"
-                          role="menu"
+                        {entry.label}
+                      </a>
+                    ) : (
+                      <div key={entry.label} className="relative">
+                        <button
+                          type="button"
+                          className={`inline-flex max-w-[11rem] items-center gap-1 rounded-lg border-2 border-transparent px-2.5 py-2 text-left font-sans text-[14px] font-medium leading-normal tracking-[0.01em] transition sm:max-w-[13rem] xl:max-w-none xl:px-3 xl:text-[15px] ${
+                            navDropdown === entry.label
+                              ? "border-[#0b1f3f] bg-[#CCFF00] font-semibold shadow-[2px_2px_0_#0b1f3f]"
+                              : "hover:border-[#0b1f3f]/25 hover:bg-white"
+                          }`}
+                          aria-expanded={navDropdown === entry.label}
+                          aria-haspopup="true"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setNavDropdown((d) => (d === entry.label ? null : entry.label));
+                          }}
                         >
-                          <p className="border-b-2 border-dashed border-[#0b1f3f]/15 px-3 pb-2.5 pt-1.5 font-sans text-[13px] font-semibold leading-normal tracking-wide text-[#0b1f3f]/70">
-                            {grup.baslik}
-                          </p>
-                          {grup.linkler.map((l) => (
-                            <a
-                              key={`${grup.baslik}-${l.label}`}
-                              href={l.href}
-                              role="menuitem"
-                              className="block px-4 py-2.5 font-sans text-[15px] font-normal leading-relaxed tracking-[0.01em] text-[#0b1f3f] transition hover:bg-[#eff6ff] hover:font-medium hover:text-[#0038ff]"
-                              onClick={() => setNavDropdown(null)}
-                            >
-                              {l.label}
-                            </a>
-                          ))}
-                        </div>
-                      ) : null}
-                    </div>
-                  ))}
-                  <a
-                    href="#footer"
-                    className="rounded-lg px-3 py-2 font-sans text-[15px] font-medium leading-normal tracking-[0.01em] transition hover:bg-[#CCFF00]/50"
-                  >
-                    İletişim
-                  </a>
+                          <span className="min-w-0 truncate xl:whitespace-normal">{entry.label}</span>
+                          <ChevronDown
+                            className={`h-4 w-4 shrink-0 opacity-70 transition ${navDropdown === entry.label ? "rotate-180" : ""}`}
+                            aria-hidden
+                          />
+                        </button>
+                        {navDropdown === entry.label ? (
+                          <div
+                            className="absolute left-0 top-[calc(100%+8px)] z-[100] min-w-[min(18rem,calc(100vw-2rem))] rounded-xl border-4 border-[#0b1f3f] bg-white py-2 font-sans shadow-[6px_6px_0_rgba(11,31,63,0.2)]"
+                            role="menu"
+                          >
+                            <p className="border-b-2 border-dashed border-[#0b1f3f]/15 px-3 pb-2.5 pt-1.5 text-[13px] font-semibold leading-normal tracking-wide text-[#0b1f3f]/70">
+                              {entry.label}
+                            </p>
+                            {entry.items.map((l) => (
+                              <a
+                                key={`${entry.label}-${l.href}`}
+                                href={l.href}
+                                role="menuitem"
+                                className="block px-4 py-2.5 text-[15px] font-normal leading-relaxed tracking-[0.01em] text-[#0b1f3f] transition hover:bg-[#eff6ff] hover:font-medium hover:text-[#0038ff]"
+                                onClick={() => setNavDropdown(null)}
+                              >
+                                {l.label}
+                              </a>
+                            ))}
+                          </div>
+                        ) : null}
+                      </div>
+                    ),
+                  )}
                 </div>
                 <a
-                  href="#basvuru-katilim"
-                  className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border-4 border-[#0b1f3f] bg-[#CCFF00] px-4 py-2.5 font-sans text-[15px] font-bold leading-none tracking-[0.02em] text-[#0b1f3f] shadow-[4px_4px_0_#0b1f3f] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#d4f836] hover:shadow-[2px_2px_0_#0b1f3f]"
+                  href="/basvuru"
+                  className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border-4 border-[#0b1f3f] bg-[#CCFF00] px-3 py-2.5 font-sans text-[14px] font-bold leading-none tracking-[0.02em] text-[#0b1f3f] shadow-[4px_4px_0_#0b1f3f] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#d4f836] hover:shadow-[2px_2px_0_#0b1f3f] xl:px-4 xl:text-[15px]"
                 >
-                  Başvuru
+                  Başvuru Yap
                   <ArrowRight className="h-3.5 w-3.5 shrink-0 opacity-90" aria-hidden />
                 </a>
               </nav>
@@ -561,51 +514,55 @@ export const Component = () => {
                 <div className="p-4 font-sans text-[#0b1f3f] antialiased">
                   <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#0b1f3f]/50">Site ağacı</p>
                   <div className="mt-4 space-y-2">
-                    {footerIcerikHaritasi.map((grup) => (
-                      <div key={`m-${grup.baslik}`} className="overflow-hidden rounded-xl border-2 border-[#0b1f3f] bg-[#f8fafc]">
-                        <button
-                          type="button"
-                          className="flex w-full items-center justify-between px-4 py-3.5 text-left text-[16px] font-medium leading-snug tracking-[0.01em]"
-                          aria-expanded={mobileAccordion === grup.baslik}
-                          onClick={() => setMobileAccordion((a) => (a === grup.baslik ? null : grup.baslik))}
+                    {mainNav.map((entry) =>
+                      entry.kind === "link" ? (
+                        <a
+                          key={entry.href}
+                          href={entry.href}
+                          className="block rounded-xl border-2 border-[#0b1f3f]/15 bg-[#f8fafc] px-4 py-3.5 text-[16px] font-medium leading-snug tracking-[0.01em]"
+                          onClick={() => setMobileMenuOpen(false)}
                         >
-                          {grup.baslik}
-                          <ChevronDown
-                            className={`h-4 w-4 shrink-0 transition ${mobileAccordion === grup.baslik ? "rotate-180" : ""}`}
-                            aria-hidden
-                          />
-                        </button>
-                        {mobileAccordion === grup.baslik ? (
-                          <ul className="border-t-2 border-dashed border-[#0b1f3f]/20 bg-white px-2 py-2">
-                            {grup.linkler.map((l) => (
-                              <li key={l.label}>
-                                <a
-                                  href={l.href}
-                                  className="block rounded-lg px-3 py-2.5 text-[16px] font-normal leading-relaxed tracking-[0.01em] hover:bg-[#eff6ff] hover:font-medium"
-                                  onClick={() => setMobileMenuOpen(false)}
-                                >
-                                  {l.label}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : null}
-                      </div>
-                    ))}
+                          {entry.label}
+                        </a>
+                      ) : (
+                        <div key={entry.label} className="overflow-hidden rounded-xl border-2 border-[#0b1f3f] bg-[#f8fafc]">
+                          <button
+                            type="button"
+                            className="flex w-full items-center justify-between px-4 py-3.5 text-left text-[16px] font-medium leading-snug tracking-[0.01em]"
+                            aria-expanded={mobileAccordion === entry.label}
+                            onClick={() => setMobileAccordion((a) => (a === entry.label ? null : entry.label))}
+                          >
+                            {entry.label}
+                            <ChevronDown
+                              className={`h-4 w-4 shrink-0 transition ${mobileAccordion === entry.label ? "rotate-180" : ""}`}
+                              aria-hidden
+                            />
+                          </button>
+                          {mobileAccordion === entry.label ? (
+                            <ul className="border-t-2 border-dashed border-[#0b1f3f]/20 bg-white px-2 py-2">
+                              {entry.items.map((l) => (
+                                <li key={l.href}>
+                                  <a
+                                    href={l.href}
+                                    className="block rounded-lg px-3 py-2.5 text-[16px] font-normal leading-relaxed tracking-[0.01em] hover:bg-[#eff6ff] hover:font-medium"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                  >
+                                    {l.label}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : null}
+                        </div>
+                      ),
+                    )}
                   </div>
                   <a
-                    href="#footer"
-                    className="mt-3 block rounded-xl border-2 border-[#0b1f3f]/15 bg-[#f8fafc] px-4 py-3.5 text-[16px] font-medium leading-snug tracking-[0.01em]"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    İletişim
-                  </a>
-                  <a
-                    href="#basvuru-katilim"
+                    href="/basvuru"
                     className="mt-3 flex items-center justify-center gap-2 rounded-xl border-4 border-[#0b1f3f] bg-[#CCFF00] py-3.5 text-center text-[16px] font-bold leading-snug tracking-[0.02em] shadow-[4px_4px_0_#0b1f3f]"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Başvuru formu
+                    Başvuru Yap
                     <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
                   </a>
                 </div>
@@ -649,13 +606,13 @@ export const Component = () => {
 
           <div className="mt-4 flex flex-wrap items-center justify-center gap-3 md:mt-5 md:gap-4">
             <a
-              href="#"
+              href="/etkinlikler"
               className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-[#CCFF00] px-7 py-2.5 text-[14px] font-bold leading-none text-neutral-950 shadow-[0_4px_24px_rgba(0,0,0,0.25)] ring-1 ring-black/15 transition hover:brightness-[1.05] active:scale-[0.98] md:min-h-[48px] md:px-9 md:text-[15px]"
             >
               Etkinliklere göz at
             </a>
             <a
-              href="#"
+              href="/kampus/temsilcilik"
               className="inline-flex min-h-[44px] items-center justify-center rounded-full border-2 border-white/70 bg-white/20 px-7 py-2.5 text-[14px] font-bold leading-none text-white shadow-[0_2px_12px_rgba(0,0,0,0.2)] backdrop-blur-md transition hover:bg-white/30 active:scale-[0.98] md:min-h-[48px] md:px-9 md:text-[15px]"
             >
               Temsilci ol
@@ -1765,7 +1722,7 @@ export const Component = () => {
                     </p>
                   </div>
                   <a
-                    href="#basvuru-katilim"
+                    href="/basvuru"
                     className="mt-8 inline-flex w-fit items-center gap-2 rounded-2xl border-4 border-[#0b1f3f] bg-white px-5 py-3 text-[12px] font-black uppercase tracking-wide text-[#0b1f3f] shadow-[5px_5px_0_#0b1f3f] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_#0b1f3f]"
                   >
                     Başvuru formu
@@ -1810,7 +1767,7 @@ export const Component = () => {
               <div className="border-t-4 border-[#0b1f3f] bg-gradient-to-b from-[#e8f2ff] via-white to-[#f4f7fb] px-4 py-8 sm:px-6 md:px-8 md:py-10">
                 <nav aria-label="Sayfa bölüm linkleri" className="relative mx-auto max-w-[1600px]">
                   <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-5 xl:gap-x-5 2xl:gap-x-8">
-                    {footerIcerikHaritasi.map((grup) => (
+                    {footerColumns.map((grup) => (
                       <div key={grup.baslik} className="min-w-0">
                         <h3 className="inline-block max-w-full border-2 border-[#0b1f3f] bg-[#CCFF00] px-2.5 py-1.5 text-[10px] font-black uppercase leading-tight tracking-wide text-[#0b1f3f] shadow-[3px_3px_0_#0b1f3f]">
                           {grup.baslik}

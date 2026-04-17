@@ -1,0 +1,60 @@
+﻿---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { LandingPageTemplate } from "@/components/templates/LandingPageTemplate";
+
+const img =
+  "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1200&q=85";
+
+const sections = [
+  {
+    kind: "intro" as const,
+    title: "Temsilcilik nedir?",
+    body: "Temsilciler, kampüste Aktif Kampüs ağını büyüten ve öğrencilerle düzenli temas kuran aktif koordinatörlerdir. Duyuru, etkinlik ve kulüp iş birliklerini bir arada yürütür.",
+    tags: ["Duyuru", "Etkinlik", "Kulüp teması"],
+  },
+  {
+    kind: "bullets" as const,
+    title: "Neden katılmalısın?",
+    items: ["Liderlik ve iletişim pratiği", "Güçlü mezun ve kulüp ağı", "Saha deneyimi ve görünürlük"],
+  },
+  {
+    kind: "model" as const,
+    title: "Çalışma modeli",
+    body: "Dönem boyunca haftalık ritim ve net sorumluluklarla ilerlersin; ekip sana şablon ve geri bildirim sağlar.",
+    steps: [
+      "Oryantasyon ve kampüs önceliklerinin belirlenmesi",
+      "Duyuru, geri bildirim ve kulüp temasının haftalık akışı",
+      "Mini etkinlik planı ve dönem sonu değerlendirme",
+    ],
+  },
+  {
+    kind: "split" as const,
+    title: "Sahada görünür ol",
+    body: "Sunumlar, kulüp buluşmaları ve kayıt oturumlarında Aktif Kampüs’ü temsil edersin; öğrenci sesini merkeze taşırsın.",
+    image: img,
+    imageAlt: "Kampüs temsilciliği",
+  },
+];
+---
+
+<SitePageLayout title="Kampüs Temsilciliği" description="Üniversitende temsilci ol — Aktif Kampüs." currentPath="/kampus/temsilcilik" contentBleed>
+  <LandingPageTemplate
+    client:load
+    heroEyebrow="Kampüs"
+    heroTitle="Temsilcilik"
+    heroSubtitle="Kampüsünde Aktif Kampüs’ü temsil et, öğrencileri bir araya getir."
+    heroStats={[
+      { label: "Aktif temsilci", value: "120+" },
+      { label: "Kampüs etkinliği", value: "300+" },
+      { label: "Ortalama dönem", value: "12 hafta" },
+    ]}
+    heroCta={{ label: "Başvuru yap", href: "/basvuru?tur=temsilci" }}
+    heroSecondaryCta={{ label: "Kampüs sayfası", href: "/kampus" }}
+    sections={sections}
+    closing={{
+      title: "Başvuru çağrısı",
+      body: "Formu doldur; ekip sana dönüş yapsın.",
+      cta: { label: "Temsilci başvurusu", href: "/basvuru?tur=temsilci" },
+    }}
+  />
+</SitePageLayout>

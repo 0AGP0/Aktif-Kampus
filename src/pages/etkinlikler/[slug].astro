@@ -1,0 +1,36 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { DetailPageTemplate } from "@/components/templates/DetailPageTemplate";
+import { events, getEventBySlug } from "@/data/site-content";
+
+export function getStaticPaths() {
+  return events.map((e) => ({ params: { slug: e.slug } }));
+}
+
+const { slug } = Astro.params;
+const event = getEventBySlug(slug!);
+
+if (!event) {
+  return Astro.redirect("/etkinlikler");
+}
+
+const meta = [
+  { icon: "calendar" as const, label: "Tarih", value: event.when },
+  event.mode === "online"
+    ? { icon: "monitor" as const, label: "Ortam", value: "Online" }
+    : { icon: "map" as const, label: "Konum", value: event.venue },
+  { icon: "user" as const, label: "Konuşmacı", value: event.speaker },
+];
+---
+
+<SitePageLayout title={event.title} description={event.excerpt} currentPath="/etkinlikler">
+  <DetailPageTemplate
+    client:load
+    eyebrow="Etkinlik"
+    title={event.title}
+    meta={meta}
+    body={event.body}
+    ctaLabel="Başvuru / ön kayıt"
+    ctaHref="/basvuru?tur=genel"
+  />
+</SitePageLayout>

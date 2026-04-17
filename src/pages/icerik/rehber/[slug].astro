@@ -1,0 +1,33 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { DetailPageTemplate } from "@/components/templates/DetailPageTemplate";
+import { getPostBySlug, postsByKind } from "@/data/site-content";
+
+export function getStaticPaths() {
+  return postsByKind.rehber.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = getPostBySlug("rehber", slug!);
+
+if (!post) {
+  return Astro.redirect("/icerik/rehber");
+}
+
+const meta = [
+  { label: "Kategori", value: post.category },
+  { label: "Tarih", value: post.date },
+];
+---
+
+<SitePageLayout title={post.title} description={post.excerpt} currentPath="/icerik">
+  <DetailPageTemplate
+    client:load
+    eyebrow="Rehber"
+    title={post.title}
+    meta={meta}
+    body={post.body}
+    ctaLabel="İletişime geç"
+    ctaHref="/kurumsal/iletisim"
+  />
+</SitePageLayout>

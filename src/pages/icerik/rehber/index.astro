@@ -1,0 +1,24 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { ListPageTemplate } from "@/components/templates/ListPageTemplate";
+import { postsByKind } from "@/data/site-content";
+---
+
+<SitePageLayout
+  title="Rehber"
+  description="Başvuru ve kampüs rehberleri."
+  currentPath="/icerik"
+  contentBleed
+  mainFooterGap
+>
+  <ListPageTemplate
+    client:load
+    variant="posts"
+    postsListKind="rehber"
+    activeHref="/icerik/rehber"
+    title="Rehber"
+    description="Adım adım rehber içerikleri — başvuru, vize ve kulüp yönetimi."
+    items={postsByKind.rehber}
+    detailPath="/icerik/rehber"
+  />
+</SitePageLayout>

@@ -1,0 +1,27 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { FaqAccordion } from "@/components/pages/FaqAccordion";
+
+const titleStyle = {
+  fontFamily: '"Arial Black", Impact, sans-serif',
+  color: "#0b1f3f",
+  textShadow:
+    "1px 1px 0 rgba(255,255,255,0.85), 2px 2px 0 rgba(204,255,0,0.35), 3px 3px 0 rgba(11,31,63,0.15)",
+};
+---
+
+<SitePageLayout title="SSS" description="Sık sorulan sorular." currentPath="/kurumsal">
+  <div class="w-full max-w-3xl mx-auto mb-8 rounded-2xl border-4 border-[#0b1f3f] bg-white/95 p-6 shadow-[12px_12px_0_#0b1f3f] md:p-10">
+    <p class="text-[10px] font-black uppercase tracking-[0.28em] text-[#0038ff]">Kurumsal</p>
+    <h1
+      class="mt-2 text-[clamp(1.85rem,4vw,2.5rem)] font-black uppercase leading-tight tracking-tight"
+      style={titleStyle}
+    >
+      Sık sorulan sorular
+    </h1>
+    <p class="mt-4 text-[15px] font-semibold leading-relaxed text-[#0b1f3f]/85">
+      Aklına takılanları hızlıca gözden geçir; daha fazlası için iletişime geç.
+    </p>
+  </div>
+  <FaqAccordion client:load />
+</SitePageLayout>

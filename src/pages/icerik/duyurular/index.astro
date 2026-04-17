@@ -1,0 +1,24 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { ListPageTemplate } from "@/components/templates/ListPageTemplate";
+import { postsByKind } from "@/data/site-content";
+---
+
+<SitePageLayout
+  title="Duyurular"
+  description="Kampüs ve platform duyuruları."
+  currentPath="/icerik"
+  contentBleed
+  mainFooterGap
+>
+  <ListPageTemplate
+    client:load
+    variant="posts"
+    postsListKind="duyuru"
+    activeHref="/icerik/duyurular"
+    title="Duyurular"
+    description="Güncel duyurular — başvuru tarihleri ve iş birlikleri tek listede."
+    items={postsByKind.duyuru}
+    detailPath="/icerik/duyurular"
+  />
+</SitePageLayout>

@@ -1,0 +1,22 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { ListPageTemplate } from "@/components/templates/ListPageTemplate";
+import { programs } from "@/data/site-content";
+---
+
+<SitePageLayout
+  title="Programlar"
+  description="Dil kursu, sertifika ve eğitim programlarını tek listede incele."
+  currentPath="/programlar"
+  contentBleed
+  mainFooterGap
+>
+  <ListPageTemplate
+    client:load
+    variant="programs"
+    title="Programlar"
+    description="Program türlerini filtreyle ayır — online veya yüz yüze formatlara göre sana uygun olanı seç."
+    items={programs}
+    detailPath="/programlar"
+  />
+</SitePageLayout>

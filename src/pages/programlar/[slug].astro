@@ -1,0 +1,41 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { DetailPageTemplate } from "@/components/templates/DetailPageTemplate";
+import { getProgramBySlug, programs } from "@/data/site-content";
+
+export function getStaticPaths() {
+  return programs.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const program = getProgramBySlug(slug!);
+
+if (!program) {
+  return Astro.redirect("/programlar");
+}
+
+const meta = [
+  { label: "Kategori", value: program.category },
+  { label: "Format", value: program.format },
+];
+
+const body = `${program.body}
+
+Kimler katılmalı?
+${program.whoFor}
+
+Kazanımlar
+${program.outcomes}`;
+---
+
+<SitePageLayout title={program.title} description={program.excerpt} currentPath="/programlar">
+  <DetailPageTemplate
+    client:load
+    eyebrow="Program"
+    title={program.title}
+    meta={meta}
+    body={body}
+    ctaLabel="Başvuru yap"
+    ctaHref="/basvuru?tur=genel"
+  />
+</SitePageLayout>

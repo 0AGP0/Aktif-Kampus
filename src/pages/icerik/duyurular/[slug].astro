@@ -1,0 +1,33 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { DetailPageTemplate } from "@/components/templates/DetailPageTemplate";
+import { getPostBySlug, postsByKind } from "@/data/site-content";
+
+export function getStaticPaths() {
+  return postsByKind.duyuru.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = getPostBySlug("duyuru", slug!);
+
+if (!post) {
+  return Astro.redirect("/icerik/duyurular");
+}
+
+const meta = [
+  { label: "Kategori", value: post.category },
+  { label: "Tarih", value: post.date },
+];
+---
+
+<SitePageLayout title={post.title} description={post.excerpt} currentPath="/icerik">
+  <DetailPageTemplate
+    client:load
+    eyebrow="Duyuru"
+    title={post.title}
+    meta={meta}
+    body={post.body}
+    ctaLabel="Başvuru yap"
+    ctaHref="/basvuru"
+  />
+</SitePageLayout>

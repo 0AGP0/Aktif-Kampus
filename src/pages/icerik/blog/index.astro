@@ -1,0 +1,24 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { ListPageTemplate } from "@/components/templates/ListPageTemplate";
+import { postsByKind } from "@/data/site-content";
+---
+
+<SitePageLayout
+  title="Blog"
+  description="Aktif Kampüs blog yazıları."
+  currentPath="/icerik"
+  contentBleed
+  mainFooterGap
+>
+  <ListPageTemplate
+    client:load
+    variant="posts"
+    postsListKind="blog"
+    activeHref="/icerik/blog"
+    title="Blog"
+    description="Kariyer, dil ve kampüs hayatına dair yazılar — kategoriyle süz, detaya geç."
+    items={postsByKind.blog}
+    detailPath="/icerik/blog"
+  />
+</SitePageLayout>

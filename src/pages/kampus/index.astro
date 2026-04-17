@@ -1,0 +1,79 @@
+﻿---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { LandingPageTemplate } from "@/components/templates/LandingPageTemplate";
+
+const imgTemsilcilik =
+  "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1200&q=85";
+const imgKulupler =
+  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=85";
+
+const sections = [
+  {
+    kind: "intro" as const,
+    title: "Kampüs temsilciliği nedir?",
+    body: "Aktif Kampüs temsilcileri; kendi üniversitesinde öğrenci topluluğunu bir araya getiren, etkinlik akışlarını canlı tutan ve kulüplerle iletişim köprüsü kuran aktif koordinatörlerdir.",
+    tags: ["Kampüs liderliği", "Etkinlik akışı", "Kulüp köprüsü"],
+  },
+  {
+    kind: "bullets" as const,
+    title: "Neden katılmalısın?",
+    items: [
+      "Kampüs içinde görünür bir liderlik rolü",
+      "Etkinlik planlama ve topluluk yönetimi pratiği",
+      "Kulüpler ve partner kurumlarla güçlü network",
+      "İçerik üretimi ve duyuru yönetiminde saha deneyimi",
+    ],
+  },
+  {
+    kind: "model" as const,
+    title: "Çalışma modeli",
+    body: "Her dönem kampüs takvimine uyumlu, ölçülebilir ve şeffaf bir işleyiş hedefleriz. Temsilci ve kulüp hatları birbirini tamamlar.",
+    steps: [
+      "Ön görüşme ve kampüs ihtiyaç analizi",
+      "Takvim, duyuru ve içerik planının netleştirilmesi",
+      "Etkinlik / kulüp iş birliklerinin yürütülmesi ve geri bildirim döngüsü",
+    ],
+  },
+  {
+    kind: "split" as const,
+    title: "Temsilcilik nasıl işler?",
+    body: "Başvuru sonrası kısa bir oryantasyon süreci başlar. Temsilci kampüs takvimine göre mini plan çıkarır ve öğrenci taleplerini ekip ile paylaşır.",
+    image: imgTemsilcilik,
+    imageAlt: "Kampüs temsilciliği toplantısı",
+  },
+  {
+    kind: "split" as const,
+    title: "Kulüpler ile ortak hat",
+    body: "Kulüplerle ortak etkinlik, sponsorluk ve içerik iş birlikleri için ayrı koordinasyon hattı vardır.",
+    image: imgKulupler,
+    imageAlt: "Öğrenci topluluğu çalışma anı",
+  },
+];
+---
+
+<SitePageLayout
+  title="Kampüs"
+  description="Kampüs temsilciliği ve kulüpler — Aktif Kampüs ile üniversitede söz sahibi ol."
+  currentPath="/kampus"
+  contentBleed
+>
+  <LandingPageTemplate
+    client:load
+    heroEyebrow="Kampüs"
+    heroTitle="Kampüsünde ses ver"
+    heroSubtitle="Temsilcilik ve kulüp iş birlikleriyle öğrenci topluluğunu güçlendiriyoruz. Etkinlikten içeriğe, fikirden uygulamaya uzanan canlı bir kampüs ağı kuruyoruz."
+    heroStats={[
+      { label: "Kampüs noktası", value: "30+" },
+      { label: "Kulüp iş birliği", value: "50+" },
+      { label: "Dönem etkinliği", value: "120+" },
+    ]}
+    heroCta={{ label: "Temsilcilik detayı", href: "/kampus/temsilcilik" }}
+    heroSecondaryCta={{ label: "Kulüpler", href: "/kampus/kulupler-topluluklar" }}
+    sections={sections}
+    closing={{
+      title: "Hazır mısın?",
+      body: "Formu doldur, kampüsünü belirt; ilk görüşme için sana dönüş yapalım.",
+      cta: { label: "Başvuru yap", href: "/basvuru?tur=temsilci" },
+    }}
+  />
+</SitePageLayout>

@@ -1,0 +1,13 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { BasvuruPageContent } from "@/components/pages/BasvuruPageContent";
+---
+
+<SitePageLayout
+  title="Başvuru Yap"
+  description="Genel, temsilci, kulüp ve iş birliği başvuruları."
+  currentPath="/basvuru"
+  contentBleed
+>
+  <BasvuruPageContent client:load />
+</SitePageLayout>

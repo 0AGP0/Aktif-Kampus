@@ -1,0 +1,8 @@
+---
+import SitePageLayout from "@/layouts/SitePageLayout.astro";
+import { ContactPageContent } from "@/components/pages/ContactPageContent";
+---
+
+<SitePageLayout title="İletişim" description="Aktif Kampüs ile iletişim formu ve bilgiler." currentPath="/kurumsal">
+  <ContactPageContent client:load />
+</SitePageLayout>
