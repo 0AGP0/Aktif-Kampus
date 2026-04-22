@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, Send } from "lucide-react";
 import type { BasvuruTur, BasvuruTurMeta } from "@/data/basvuru-config";
 import { basvuruTurMeta } from "@/data/basvuru-config";
 import { BASVURU_KVKK_BASLIK, BASVURU_KVKK_METNI, BASVURU_KVKK_ONAY_METNI } from "@/data/basvuru-kvkk";
+import { extractFormFields, normalizeCommonFields, postFormToWebhook } from "@/lib/form-webhook";
 
 const titleStyle: React.CSSProperties = {
   fontFamily: '"Arial Black", Impact, sans-serif',
@@ -78,7 +79,7 @@ function GenelBasvuruForm({ idSuffix }: { idSuffix: string }) {
             Ad Soyad
             <Req />
           </label>
-          <input id={`g-ad${idSuffix}`} name="adSoyad" type="text" autoComplete="name" required className={inp} />
+          <input id={`g-ad${idSuffix}`} name="full_name" type="text" autoComplete="name" required className={inp} />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor={`g-email${idSuffix}`} className={lbl}>
@@ -92,28 +93,28 @@ function GenelBasvuruForm({ idSuffix }: { idSuffix: string }) {
             Adres
             <Req />
           </label>
-          <textarea id={`g-adres${idSuffix}`} name="adres" rows={3} required className={inp} />
+          <textarea id={`g-adres${idSuffix}`} name="address" rows={3} required className={inp} />
         </div>
         <div>
           <label htmlFor={`g-tel${idSuffix}`} className={lbl}>
             Telefon numarası
             <Req />
           </label>
-          <input id={`g-tel${idSuffix}`} name="telefon" type="tel" autoComplete="tel" required className={inp} />
+          <input id={`g-tel${idSuffix}`} name="phone" type="tel" autoComplete="tel" required className={inp} />
         </div>
         <div>
           <label htmlFor={`g-il${idSuffix}`} className={lbl}>
             Yaşadığınız il
             <Req />
           </label>
-          <input id={`g-il${idSuffix}`} name="yasadigiIl" type="text" autoComplete="address-level1" required className={inp} />
+          <input id={`g-il${idSuffix}`} name="city" type="text" autoComplete="address-level1" required className={inp} />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor={`g-uni${idSuffix}`} className={lbl}>
             Üniversite ve Bölüm
             <Req />
           </label>
-          <input id={`g-uni${idSuffix}`} name="universiteBolum" type="text" required className={inp} />
+          <input id={`g-uni${idSuffix}`} name="university" type="text" required className={inp} />
         </div>
       </div>
 
@@ -140,7 +141,7 @@ function GenelBasvuruForm({ idSuffix }: { idSuffix: string }) {
           Bize kendinden ve Aktif Kampüs&apos;e nasıl katkı sağlayabileceğinden bahseder misin?
           <Req />
         </label>
-        <textarea id={`g-katki${idSuffix}`} name="katki" rows={5} required className={inp} />
+          <textarea id={`g-katki${idSuffix}`} name="contribution" rows={5} required className={inp} />
       </div>
 
       <KvkkBlock idSuffix={idSuffix} />
@@ -157,7 +158,7 @@ function TemsilciBasvuruForm({ idSuffix }: { idSuffix: string }) {
             Ad Soyad
             <Req />
           </label>
-          <input id={`t-ad${idSuffix}`} name="adSoyad" type="text" autoComplete="name" required className={inp} />
+          <input id={`t-ad${idSuffix}`} name="full_name" type="text" autoComplete="name" required className={inp} />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor={`t-email${idSuffix}`} className={lbl}>
@@ -171,27 +172,27 @@ function TemsilciBasvuruForm({ idSuffix }: { idSuffix: string }) {
             Yaşadığınız İl
             <Req />
           </label>
-          <input id={`t-il${idSuffix}`} name="yasadigiIl" type="text" required className={inp} />
+          <input id={`t-il${idSuffix}`} name="city" type="text" required className={inp} />
         </div>
         <div>
           <label htmlFor={`t-tel${idSuffix}`} className={lbl}>
             Telefon numarası
           </label>
-          <input id={`t-tel${idSuffix}`} name="telefon" type="tel" autoComplete="tel" className={inp} />
+          <input id={`t-tel${idSuffix}`} name="phone" type="tel" autoComplete="tel" className={inp} />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor={`t-uni${idSuffix}`} className={lbl}>
             Hangi üniversitede temsilcilik yapmak istiyorsun?
             <Req />
           </label>
-          <input id={`t-uni${idSuffix}`} name="universiteTemsilcilik" type="text" required className={inp} />
+          <input id={`t-uni${idSuffix}`} name="university" type="text" required className={inp} />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor={`t-bolum${idSuffix}`} className={lbl}>
             Bölüm ve sınıf düzeyi
             <Req />
           </label>
-          <input id={`t-bolum${idSuffix}`} name="bolumSinif" type="text" required className={inp} />
+          <input id={`t-bolum${idSuffix}`} name="department" type="text" required className={inp} />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor={`t-neden${idSuffix}`} className={lbl}>
@@ -274,7 +275,7 @@ function BasitBasvuruForm({ idSuffix, meta }: { idSuffix: string; meta: BasvuruT
             Ad soyad
             <Req />
           </label>
-          <input id={`s-ad${idSuffix}`} name="adSoyad" type="text" autoComplete="name" required className={inp} />
+          <input id={`s-ad${idSuffix}`} name="full_name" type="text" autoComplete="name" required className={inp} />
         </div>
         <div>
           <label htmlFor={`s-email${idSuffix}`} className={lbl}>
@@ -287,14 +288,14 @@ function BasitBasvuruForm({ idSuffix, meta }: { idSuffix: string; meta: BasvuruT
           <label htmlFor={`s-uni${idSuffix}`} className={lbl}>
             Üniversite <span className="font-semibold normal-case text-[#0b1f3f]/50">(isteğe bağlı)</span>
           </label>
-          <input id={`s-uni${idSuffix}`} name="universite" type="text" autoComplete="organization" className={inp} />
+          <input id={`s-uni${idSuffix}`} name="university" type="text" autoComplete="organization" className={inp} />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor={`s-mesaj${idSuffix}`} className={lbl}>
             Mesaj
             <Req />
           </label>
-          <textarea id={`s-mesaj${idSuffix}`} name="mesaj" rows={5} required placeholder={meta.mesajPlaceholder} className={inp} />
+          <textarea id={`s-mesaj${idSuffix}`} name="message" rows={5} required placeholder={meta.mesajPlaceholder} className={inp} />
         </div>
       </div>
       <KvkkBlock idSuffix={idSuffix} />
@@ -309,6 +310,30 @@ export type BasvuruPageContentProps = {
 export function BasvuruPageContent({ variant }: BasvuruPageContentProps) {
   const meta = basvuruTurMeta[variant];
   const idSuffix = `-${variant}`;
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const allFields = extractFormFields(formData);
+
+    try {
+      setStatus("sending");
+      const payload = normalizeCommonFields(formData, {
+        ...allFields,
+        form_type: `application_${variant}`,
+        variant,
+        raw_fields: JSON.stringify(allFields),
+      });
+      await postFormToWebhook(payload);
+      setStatus("success");
+      form.reset();
+    } catch (error) {
+      console.error(error);
+      setStatus("error");
+    }
+  }
 
   return (
     <div className="flex w-full flex-col">
@@ -378,11 +403,10 @@ export function BasvuruPageContent({ variant }: BasvuruPageContentProps) {
 
           <form
             className="mt-10 max-w-3xl space-y-6 md:mt-12"
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
+            onSubmit={handleSubmit}
           >
-            <input type="hidden" name="tur" value={variant} />
+            <input type="hidden" name="formType" value={`application_${variant}`} />
+            <input type="hidden" name="variant" value={variant} />
 
             {variant === "genel" ? <GenelBasvuruForm idSuffix={idSuffix} /> : null}
             {variant === "temsilci" ? <TemsilciBasvuruForm idSuffix={idSuffix} /> : null}
@@ -391,11 +415,18 @@ export function BasvuruPageContent({ variant }: BasvuruPageContentProps) {
 
             <button
               type="submit"
+              disabled={status === "sending"}
               className="inline-flex min-h-[56px] w-full max-w-xl items-center justify-center gap-2 rounded-2xl border-4 border-[#0b1f3f] bg-[#CCFF00] py-4 text-[15px] font-black uppercase tracking-wide text-[#0b1f3f] shadow-[6px_6px_0_#0b1f3f] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_#0b1f3f]"
             >
               <Send className="h-5 w-5 shrink-0" aria-hidden />
-              Gönder
+              {status === "sending" ? "Gonderiliyor..." : "Gonder"}
             </button>
+            {status === "success" ? (
+              <p className="text-[13px] font-bold text-emerald-700">Basvurun alindi. Ekibimiz en kisa surede seninle iletisime gececek.</p>
+            ) : null}
+            {status === "error" ? (
+              <p className="text-[13px] font-bold text-red-700">Gonderim sirasinda bir hata olustu. Lutfen tekrar dene.</p>
+            ) : null}
           </form>
         </div>
       </section>

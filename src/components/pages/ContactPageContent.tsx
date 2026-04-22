@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { normalizeCommonFields, postFormToWebhook } from "@/lib/form-webhook";
 
 const titleStyle: React.CSSProperties = {
   fontFamily: '"Arial Black", Impact, sans-serif',
@@ -9,6 +10,27 @@ const titleStyle: React.CSSProperties = {
 };
 
 export function ContactPageContent() {
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      setStatus("sending");
+      const payload = normalizeCommonFields(formData, {
+        form_type: "contact",
+      });
+      await postFormToWebhook(payload);
+      setStatus("success");
+      form.reset();
+    } catch (error) {
+      console.error(error);
+      setStatus("error");
+    }
+  }
+
   return (
     <div className="w-full max-w-6xl mx-auto grid gap-8 lg:grid-cols-2 lg:gap-12">
       <header className="rounded-2xl border-4 border-[#0b1f3f] bg-white/95 p-6 shadow-[12px_12px_0_#0b1f3f] md:p-10">
@@ -56,9 +78,7 @@ export function ContactPageContent() {
         <h2 className="text-[18px] font-black uppercase text-[#0b1f3f]">Mesaj gönder</h2>
         <form
           className="mt-6 space-y-5"
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
+          onSubmit={handleSubmit}
         >
           <div>
             <label htmlFor="iletisim-ad" className="block text-[11px] font-black uppercase tracking-wide text-[#0b1f3f]">
@@ -66,7 +86,7 @@ export function ContactPageContent() {
             </label>
             <input
               id="iletisim-ad"
-              name="adSoyad"
+              name="full_name"
               type="text"
               required
               className="mt-2 w-full rounded-xl border-4 border-[#0b1f3f] bg-[#f8fafc] px-4 py-3 text-[14px] font-bold shadow-[4px_4px_0_#0b1f3f] outline-none focus:bg-white focus:ring-2 focus:ring-[#0038ff]"
@@ -90,7 +110,7 @@ export function ContactPageContent() {
             </label>
             <input
               id="iletisim-konu"
-              name="konu"
+              name="subject"
               type="text"
               className="mt-2 w-full rounded-xl border-4 border-[#0b1f3f] bg-[#f8fafc] px-4 py-3 text-[14px] font-bold shadow-[4px_4px_0_#0b1f3f] outline-none focus:bg-white focus:ring-2 focus:ring-[#0038ff]"
             />
@@ -101,7 +121,7 @@ export function ContactPageContent() {
             </label>
             <textarea
               id="iletisim-mesaj"
-              name="mesaj"
+              name="message"
               rows={4}
               required
               className="mt-2 w-full resize-y rounded-xl border-4 border-[#0b1f3f] bg-[#f8fafc] px-4 py-3 text-[14px] font-semibold leading-relaxed shadow-[4px_4px_0_#0b1f3f] outline-none focus:bg-white focus:ring-2 focus:ring-[#0038ff]"
@@ -109,11 +129,18 @@ export function ContactPageContent() {
           </div>
           <button
             type="submit"
+            disabled={status === "sending"}
             className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border-4 border-[#0b1f3f] bg-[#CCFF00] py-3.5 text-[14px] font-black uppercase tracking-wide text-[#0b1f3f] shadow-[6px_6px_0_#0b1f3f] transition hover:translate-x-0.5 hover:translate-y-0.5"
           >
             <Send className="h-4 w-4" aria-hidden />
-            Gönder
+            {status === "sending" ? "Gonderiliyor..." : "Gonder"}
           </button>
+          {status === "success" ? (
+            <p className="text-[13px] font-bold text-emerald-700">Mesajin alindi. En kisa surede donus yapacagiz.</p>
+          ) : null}
+          {status === "error" ? (
+            <p className="text-[13px] font-bold text-red-700">Gonderim sirasinda bir hata olustu. Lutfen tekrar dene.</p>
+          ) : null}
         </form>
       </div>
     </div>
