@@ -8,23 +8,23 @@ const imgHakkimizda =
 const sections = [
   {
     kind: "intro" as const,
-    title: "Platform ne sunuyor?",
-    body: "Öğrencileri, kulüpleri ve programları tek çatı altında buluşturan bir topluluk altyapısı sunuyoruz. Seminerlerden dil kurslarına, yurtdışı oturumlarından kampüs temsilciliğine kadar içerikler tek yerde toplanır.",
-    tags: ["Şeffaf süreç", "Kampüs ağı", "Öğrenci önceliği"],
+    title: "Biz kimiz?",
+    body: "Aktif Kampüs; üniversite öğrencilerini, öğrenci topluluklarını ve gelişim fırsatlarını buluşturan kampüsler arası bir ağdır. Ticari baskıdan uzak, topluluk ve öğrenci yararı öncelikli bir dil kullanır; kampüs içi dayanışma ve fırsat eşitliğini güçlendirmeyi hedefler.",
+    tags: ["Topluluk odaklı", "Erişilebilir fırsatlar", "Kampüsler arası bağ"],
   },
   {
     kind: "bullets" as const,
-    title: "Temel avantajlar",
+    title: "Sosyal fayda yaklaşımı",
     items: [
-      "Kampüsler arası görünür ve ölçülebilir etki",
-      "Kulüp ve partner ekosistemiyle uyumlu süreçler",
-      "Öğrenci odaklı, şeffaf iletişim",
+      "Öğrenci yararı ve şeffaf iletişim ön planda",
+      "Kulüpler, temsilciler ve markalarla uyumlu iş birliği süreçleri",
+      "Gençlerin kampüste ve dijitalde görünürlüğünü destekleyen programlar",
     ],
   },
   {
     kind: "model" as const,
     title: "Çalışma modeli",
-    body: "İçerik, etkinlik ve iş birliklerini aynı çatıda yönetiriz; her kampüs için tekrarlanabilir ama esnek bir çerçeve kullanırız.",
+    body: "Her hizmet (etkinlik, dil, yurtdışı eğitim, temsilcilik, kulüp) ayrı sayfalarda derinlemesine anlatılır; ana sayfa ise bu başlıkları net bir haritayla özetler. Kampüs ihtiyaçlarına göre esnek, tekrarlanabilir bir çerçeveyle ilerleriz.",
     steps: [
       "Kampüs ve kulüp ihtiyaçlarının dinlenmesi",
       "Takvim ve kanalların (duyuru, kayıt, geri bildirim) netleştirilmesi",
@@ -34,19 +34,24 @@ const sections = [
   {
     kind: "split" as const,
     title: "Vizyon ve misyon",
-    body: "Vizyonumuz: eşit erişim ve kampüsler arası paylaşımı güçlendirmek. Misyonumuz: güvenilir içerik ve ölçülebilir iş birlikleriyle öğrenci topluluklarını desteklemek.",
+    body: "Vizyon: Türkiye’de ve uluslararası düzeyde kampüsler arasında iş birliği kurmak; öğrencilere erişilebilir gelişim alanları sunmak. Misyon: öğrencileri eğitim, kariyer, yabancı dil, sosyal hareketlilik ve uluslararası fırsatlarla buluşturmak.",
     image: imgHakkimizda,
     imageAlt: "Kampüste bir araya gelen öğrenciler",
   },
 ];
 ---
 
-<SitePageLayout title="Hakkımızda" description="Aktif Kampüs vizyon, misyon ve çalışma modeli." currentPath="/kurumsal/hakkimizda" contentBleed>
+<SitePageLayout
+  title="Hakkımızda"
+  description="Aktif Kampüs kimdir, vizyon ve misyonu nedir? Sosyal fayda odaklı kampüs platformu ve çalışma modelimiz hakkında bilgi."
+  currentPath="/kurumsal/hakkimizda"
+  contentBleed
+>
   <LandingPageTemplate
     client:load
     heroEyebrow="Kurumsal"
     heroTitle="Hakkımızda"
-    heroSubtitle="Öğrenci toplulukları için şeffaf, bağlantılı ve sürdürülebilir bir gelişim platformu."
+    heroSubtitle="Öğrencilerin gelişim fırsatlarına daha kolay ulaşması ve üniversiteler arasında güçlü etkileşim kurulması için çalışan topluluk odaklı bir kampüs platformu."
     heroStats={[
       { label: "Partner ekosistemi", value: "40+" },
       { label: "İçerik ve rehber", value: "200+" },

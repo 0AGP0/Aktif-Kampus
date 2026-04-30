@@ -64,8 +64,8 @@ export const SiteFooter = () => (
                 </a>
                 <div className="flex items-center gap-2">
                   {[
-                    { Icon: Instagram, label: "Instagram", href: "#" },
-                    { Icon: Linkedin, label: "LinkedIn", href: "#" },
+                    { Icon: Instagram, label: "Instagram", href: "/kurumsal/iletisim" },
+                    { Icon: Linkedin, label: "LinkedIn", href: "/kurumsal/iletisim" },
                   ].map(({ Icon, label, href }) => (
                     <a
                       key={label}
@@ -113,14 +113,20 @@ export const SiteFooter = () => (
 
           <div className="flex flex-col items-start justify-between gap-3 border-t-4 border-[#0b1f3f] bg-[#f1f5f9] px-4 py-4 sm:flex-row sm:items-center sm:px-5 md:px-6">
             <div className="flex flex-wrap gap-x-5 gap-y-1 text-[12px] font-bold text-[#0b1f3f]/75">
-              <a href="#" className="transition hover:text-[#0038ff]">
+              <a href="/kurumsal/iletisim" className="transition hover:text-[#0038ff]">
                 Gizlilik
               </a>
               <span className="text-[#0b1f3f]/30" aria-hidden>
                 ·
               </span>
-              <a href="#" className="transition hover:text-[#0038ff]">
+              <a href="/kurumsal/sss" className="transition hover:text-[#0038ff]">
                 KVKK
+              </a>
+              <span className="text-[#0b1f3f]/30" aria-hidden>
+                ·
+              </span>
+              <a href="/kurumsal/sss" className="transition hover:text-[#0038ff]">
+                Kullanım koşulları
               </a>
             </div>
             <a

@@ -18,16 +18,22 @@ const meta = [
   { label: "Kategori", value: post.category },
   { label: "Tarih", value: post.date },
 ];
+
+const pageTitle = `${post.title} | Aktif Kampüs Blog`;
 ---
 
-<SitePageLayout title={post.title} description={post.excerpt} currentPath="/icerik">
+<SitePageLayout title={pageTitle} description={post.excerpt} currentPath="/icerik">
   <DetailPageTemplate
     client:load
     eyebrow="Blog"
     title={post.title}
+    image={post.image}
+    imageAlt={post.title}
+    imageTag={post.category}
     meta={meta}
     body={post.body}
-    ctaLabel="Başvuru ve etkinlikler"
-    ctaHref="/basvuru"
+    bodyFigures={post.bodyFigures}
+    ctaLabel="Etkinlikler ve başvuru"
+    ctaHref="/etkinlikler"
   />
 </SitePageLayout>

@@ -14,23 +14,35 @@ if (!event) {
   return Astro.redirect("/etkinlikler");
 }
 
+const speakerLabel = event.metaThirdLabel ?? "Konuşmacı";
+
+const ortamOnline =
+  event.venue.includes("Zoom") || event.venue.includes("Meet")
+    ? "Online · Zoom veya Google Meet"
+    : "Online";
+
 const meta = [
   { icon: "calendar" as const, label: "Tarih", value: event.when },
   event.mode === "online"
-    ? { icon: "monitor" as const, label: "Ortam", value: "Online" }
+    ? { icon: "monitor" as const, label: "Ortam", value: ortamOnline }
     : { icon: "map" as const, label: "Konum", value: event.venue },
-  { icon: "user" as const, label: "Konuşmacı", value: event.speaker },
+  { icon: "user" as const, label: speakerLabel, value: event.speaker },
 ];
+
+const pageTitle = `${event.title} | Aktif Kampüs Etkinlikleri`;
 ---
 
-<SitePageLayout title={event.title} description={event.excerpt} currentPath="/etkinlikler">
+<SitePageLayout title={pageTitle} description={event.excerpt} currentPath="/etkinlikler">
   <DetailPageTemplate
     client:load
-    eyebrow="Etkinlik"
+    eyebrow={`Etkinlik · ${event.category}`}
     title={event.title}
+    image={event.image}
+    imageAlt={event.title}
+    imageTag={event.category}
     meta={meta}
     body={event.body}
-    ctaLabel="Başvuru / ön kayıt"
-    ctaHref="/basvuru/genel"
+    ctaLabel={event.ctaLabel ?? "Başvuru / ön kayıt"}
+    ctaHref={event.ctaHref ?? "/basvuru/genel"}
   />
 </SitePageLayout>

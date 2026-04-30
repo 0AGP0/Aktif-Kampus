@@ -8,41 +8,51 @@ const img =
 const sections = [
   {
     kind: "intro" as const,
-    title: "Temsilcilik nedir?",
-    body: "Temsilciler, kampüste Aktif Kampüs ağını büyüten ve öğrencilerle düzenli temas kuran aktif koordinatörlerdir. Duyuru, etkinlik ve kulüp iş birliklerini bir arada yürütür.",
-    tags: ["Duyuru", "Etkinlik", "Kulüp teması"],
+    title: "Kampüs temsilcisi ne yapar?",
+    body: "Kampüs temsilcisi, Aktif Kampüs’ü kendi üniversitesinde temsil eden; kulüplerle köprü kuran, etkinlik ve duyuruları kampüste görünür kılan ve öğrenci ihtiyaçlarını merkeze taşıyan öğrenci lideridir. Yerel buluşmalar, online oturumlar ve kayıt süreçlerinde öğrencilere yol gösterir; yeni temsilci ve ekip oluşumuna da katkı verir. Görevler gönüllülük veya yarı zamanlı çerçevede, şeffaf bir iş birliğiyle tanımlanır.",
+    tags: ["Kampüs temsilcisi", "Öğrenci fırsatları", "Üniversite etkinlikleri"],
   },
   {
     kind: "bullets" as const,
-    title: "Neden katılmalısın?",
-    items: ["Liderlik ve iletişim pratiği", "Güçlü mezun ve kulüp ağı", "Saha deneyimi ve görünürlük"],
+    title: "Neden temsilci olmalısın?",
+    items: [
+      "Kampüs içi liderlik, iletişim ve etkinlik organizasyonu deneyimi",
+      "Kulüpler, mezunlar ve iş birliği partnerleriyle networking",
+      "Sertifika, referans mektubu ve özel eğitim oturumlarına erişim (süreç koşullarına bağlı)",
+      "Sosyal fayda odaklı, öğrenci yararını önceleyen bir ağda yer alma",
+    ],
   },
   {
     kind: "model" as const,
-    title: "Çalışma modeli",
-    body: "Dönem boyunca haftalık ritim ve net sorumluluklarla ilerlersin; ekip sana şablon ve geri bildirim sağlar.",
+    title: "Görevler ve çalışma ritmi",
+    body: "Dönem boyunca haftalık duyuru ve geri bildirim ritmi; kampüs takvimine uygun mini etkinlik veya bilgilendirme oturumları hedeflenir. Ekip, şablon, iletişim kanalları ve güvenli geri bildirim ile yanınızdadır.",
     steps: [
-      "Oryantasyon ve kampüs önceliklerinin belirlenmesi",
-      "Duyuru, geri bildirim ve kulüp temasının haftalık akışı",
-      "Mini etkinlik planı ve dönem sonu değerlendirme",
+      "Kulüpler ve öğrenci topluluklarıyla düzenli temas; ortak etkinlik önerileri",
+      "Kampüs içi görünürlük: pano, dijital duyuru ve kayıt yönlendirmesi",
+      "Etkinlik katılımını artırma ve öğrenci geri bildirimini Aktif Kampüs ekibine iletme",
     ],
   },
   {
     kind: "split" as const,
-    title: "Sahada görünür ol",
-    body: "Sunumlar, kulüp buluşmaları ve kayıt oturumlarında Aktif Kampüs’ü temsil edersin; öğrenci sesini merkeze taşırsın.",
+    title: "Sahada temsil et",
+    body: "Seminer öncesi bilgilendirme, kulüp toplantılarında kısa tanıtım ve ücretsiz etkinlik kayıtlarında yönlendirme gibi saha anlarında Aktif Kampüs’ü temsil edersin. Amaç yalnızca tanıtım değil; öğrencinin doğru programa ve kayıt kanalına ulaşmasını kolaylaştırmaktır.",
     image: img,
-    imageAlt: "Kampüs temsilciliği",
+    imageAlt: "Üniversite kampüsünde temsilci sunumu",
   },
 ];
 ---
 
-<SitePageLayout title="Kampüs Temsilciliği" description="Üniversitende temsilci ol — Aktif Kampüs." currentPath="/kampus/temsilcilik" contentBleed>
+<SitePageLayout
+  title="Kampüs Temsilcisi Ol | Üniversitende Aktif Kampüs Topluluğu"
+  description="Üniversitende kampüs temsilcisi ol: görevler, avantajlar ve başvuru. Kulüplerle iletişim, etkinlik görünürlüğü ve öğrenci fırsatları — Aktif Kampüs temsilcilik sayfası."
+  currentPath="/kampus/temsilcilik"
+  contentBleed
+>
   <LandingPageTemplate
     client:load
     heroEyebrow="Kampüs"
     heroTitle="Temsilcilik"
-    heroSubtitle="Kampüsünde Aktif Kampüs’ü temsil et, öğrencileri bir araya getir."
+    heroSubtitle="Kendi üniversitende Aktif Kampüs’ü temsil et: duyurular, kulüp köprüsü ve kampüs etkinliklerinde görünür liderlik. Başvurunu ilet, süreci birlikte netleştirelim."
     heroStats={[
       { label: "Aktif temsilci", value: "120+" },
       { label: "Kampüs etkinliği", value: "300+" },
@@ -52,8 +62,8 @@ const sections = [
     heroSecondaryCta={{ label: "Kampüs sayfası", href: "/kampus" }}
     sections={sections}
     closing={{
-      title: "Başvuru çağrısı",
-      body: "Formu doldur; ekip sana dönüş yapsın.",
+      title: "Başvurunu tamamla",
+      body: "Hangi üniversitede olduğun, haftalık ayırabileceğin süre ve motivasyonunu formda net yaz; kısa liste veya ek sorular için e-posta ile dönüş yapılır.",
       cta: { label: "Temsilci başvurusu", href: "/basvuru/temsilci" },
     }}
   />

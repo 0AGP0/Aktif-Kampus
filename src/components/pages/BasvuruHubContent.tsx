@@ -47,11 +47,6 @@ export function BasvuruHubContent() {
               ve seçim
             </span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-[16px] font-semibold leading-relaxed text-white/95 [text-shadow:0_2px_14px_rgba(0,0,0,0.4)] md:text-lg">
-            Aşağıdan türünü seçip ilgili forma geç. Eski{" "}
-            <span className="font-bold text-[#CCFF00]">?tur=</span> bağlantıları otomatik olarak doğru sayfaya
-            yönlendirilir.
-          </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 md:mt-10">
             <a
               href="/etkinlikler"

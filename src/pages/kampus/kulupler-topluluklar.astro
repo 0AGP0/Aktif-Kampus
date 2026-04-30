@@ -8,38 +8,43 @@ const img =
 const sections = [
   {
     kind: "intro" as const,
-    title: "Kulüpler ve topluluklar",
-    body: "Ortak etkinlik, içerik ve sponsorluk modelleri üretiyoruz; kulüp yönetimi ve üyeler için görünürlük sağlıyoruz.",
-    tags: ["Ortak etkinlik", "Sponsorluk", "İçerik"],
+    title: "Üniversite kulüpleri ve topluluklar",
+    body: "Öğrenci kulüpleri ve resmi topluluklar; ortak etkinlik, konuşmacı yönlendirmesi, sponsorluk ve tanıtım desteği için Aktif Kampüs ile tek bir koordinasyon hattına bağlanabilir. Amaç üye deneyimini zenginleştirmek, kampüs içi görünürlüğü artırmak ve sosyal fayda odaklı programları şeffaf biçimde duyurmaktır. Ticari baskı yerine topluluk ve öğrenci yararı önceliklidir.",
+    tags: ["Kulüp iş birliği", "Ortak etkinlik", "Sponsorluk desteği"],
   },
   {
     kind: "bullets" as const,
-    title: "Neden iş birliği?",
-    items: ["Üye deneyimini zenginleştirme", "Kampüs içi ve dışı görünürlük", "Ölçülebilir etki ve raporlama"],
+    title: "Kulüpler neden iş birliği yapar?",
+    items: [
+      "Panel, atölye ve kampüs buluşmalarında konuşmacı ve içerik yönlendirmesi",
+      "Etkinlik görünürlüğü: duyuru, kayıt ve çok kampüsli tanıtım imkânı",
+      "Marka ve kurumlarla uyumlu, ölçülebilir ortak program veya sponsorluk modelleri",
+      "Kulüp yönetimi için tek temas noktası ve net teslim takvimi",
+    ],
   },
   {
     kind: "model" as const,
     title: "Çalışma modeli",
-    body: "Kulübün hedefi ve takvimine göre esnek paketler; tek temas noktası ve net teslim tarihleri.",
+    body: "Kulübünüzün hedefi, üye profili ve akademik takvime göre esnek bir yol haritası çıkarılır. Ortak etkinlik mi, sponsorluk mu yoksa içerik ortaklığı mı — önce ihtiyaç netleşir, sonra yürütme ve iletişim adımları yazılı hale getirilir.",
     steps: [
-      "Kulüp profili ve hedef etkinliklerin netleştirilmesi",
-      "Ortak program veya sponsorluk yolunun seçilmesi",
-      "Yürütme, iletişim ve dönem değerlendirmesi",
+      "Kulüp profili, hedef etkinlikler ve bütçe beklentisinin özetlenmesi",
+      "Ortak program, konuşmacı veya sponsorluk formatının seçilmesi",
+      "Yürütme, duyuru, kayıt ve dönem sonu kısa değerlendirme",
     ],
   },
   {
     kind: "split" as const,
-    title: "Ortak üretim",
-    body: "Atölye, panel ve sosyal etki projeleri kampüs takvimine entegre edilir; duyuru ve kayıt süreçlerinde yanınızdayız.",
+    title: "Ortak üretim ve kampüs takvimi",
+    body: "Atölye, panel, sosyal etki projeleri ve çok kampüsli online oturumlar, üniversite etkinlik takvimine uyumlu planlanır. Aktif Kampüs, duyuru metinleri ve kayıt yönlendirmesinde kulüp yönetimine destek verir; katılımcı deneyimi ve erişilebilir dil ön plandadır.",
     image: img,
-    imageAlt: "Kulüp çalışması",
+    imageAlt: "Üniversite kulübü toplantısı ve ortak planlama",
   },
 ];
 ---
 
 <SitePageLayout
-  title="Kulüpler / Topluluklar"
-  description="Kulüpler için ortak etkinlik ve iş birliği — Aktif Kampüs."
+  title="Üniversite Kulüpleri ve İş Birliği | Aktif Kampüs"
+  description="Öğrenci kulüpleri için ortak etkinlik, sponsorluk ve tanıtım desteği. Kampüs etkinlikleri, konuşmacı yönlendirmesi ve kulüp başvurusu — Aktif Kampüs topluluk sayfası."
   currentPath="/kampus/kulupler-topluluklar"
   contentBleed
 >
@@ -47,7 +52,7 @@ const sections = [
     client:load
     heroEyebrow="Kampüs"
     heroTitle="Kulüpler ve topluluklar"
-    heroSubtitle="Kulüp yönetimi ve üyeler için ortak etkinlik, sponsor ve içerik modelleri."
+    heroSubtitle="Kulüp başkanı veya iletişim sorumlusu olarak ortak program, sponsorluk ve içerik iş birliği talep edebilirsin. Üye deneyimini güçlendiren, şeffaf ve ölçülebilir kampüs projeleri için birlikte planlayalım."
     heroStats={[
       { label: "Kulüp partneri", value: "80+" },
       { label: "Ortak proje", value: "150+" },
@@ -57,8 +62,8 @@ const sections = [
     heroSecondaryCta={{ label: "Kampüs sayfası", href: "/kampus" }}
     sections={sections}
     closing={{
-      title: "Başvuru çağrısı",
-      body: "Kulübünü ve hedefini anlat; birlikte planlayalım.",
+      title: "Kulübünle başvur",
+      body: "Kulüp adı, üye ölçeği, hedef etkinlik veya sponsorluk beklentini formda özetle; ekibimiz uygun formatı önermek için dönüş yapar.",
       cta: { label: "Kulüp başvurusu", href: "/basvuru/kulup" },
     }}
   />

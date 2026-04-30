@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { footerColumns, mainNav } from "@/data/site-nav";
 import { basvuruTurleri, basvuruTurLabels } from "@/data/basvuru-config";
+import { getHomeFeaturedEventCards } from "@/data/site-content";
 import {
   ArrowRight,
   Award,
@@ -103,9 +104,9 @@ const dilKurslariOzeti: { dil: string; not: string }[] = [
 ];
 
 const yurtdisiOzet: { t: string; d: string }[] = [
-  { t: "Ülke & program rehberi", d: "Webinar ve bilgi oturumları" },
-  { t: "Başvuru takvimi", d: "Seminer ve fuar duyuruları" },
-  { t: "Burs & iş birlikleri", d: "Partner kurumlarla ön görüşme" },
+  { t: "Ülke ve program rehberi", d: "Almanya, İtalya, Hollanda, İspanya ve daha fazlası için eğitim sistemi ve yaşam" },
+  { t: "Başvuru takvimi", d: "Yurtdışı eğitim seminerleri, tanıtım günleri ve fuar duyuruları" },
+  { t: "Burs ve finansman", d: "Partner kurumlarla bilgilendirme ve ön görüşme yönlendirmesi" },
 ];
 
 const isBirligiPartnerler: { ad: string; alan: string; kisa: string }[] = [
@@ -120,44 +121,47 @@ const isBirligiPartnerler: { ad: string; alan: string; kisa: string }[] = [
 const basvuruKatilimTurleri: { baslik: string; aciklama: string; icon: LucideIcon }[] = [
   {
     baslik: "Etkinlik kaydı",
-    aciklama: "Seminer, buluşma ve online oturumlara katılım için ön kayıt.",
+    aciklama: "Üniversite semineri, kampüs buluşması veya online webinar için ön kayıt ve katılım talebi.",
     icon: Calendar,
   },
   {
-    baslik: "Temsilcilik başvurusu",
-    aciklama: "Kendi üniversitende Aktif Kampüs temsilcisi olmak için başvuru.",
+    baslik: "Kampüs temsilciliği",
+    aciklama: "Kendi üniversitende temsilci ol; kulüplerle köprü kur, etkinlik görünürlüğünü artır.",
     icon: Users,
   },
   {
-    baslik: "Kulüp & iş birliği",
-    aciklama: "Ortak etkinlik, sponsorluk veya kulüp iş birliği görüşmesi.",
+    baslik: "Kulüp ve topluluk",
+    aciklama: "Kulüp etkinliği yayınlama, ortak program veya sponsorluk desteği için iş birliği başvurusu.",
     icon: Handshake,
   },
   {
-    baslik: "Bülten & duyuru",
-    aciklama: "Yeni içerik, fırsat ve kampüs duyurularından haberdar ol.",
-    icon: Megaphone,
+    baslik: "Konuşmacı ve içerik",
+    aciklama: "Uzman, eğitmen veya mezun olarak seminer ve panel programlarına katkı için başvuru.",
+    icon: Mic2,
   },
 ];
 
-const blogRehberYazilari: { baslik: string; kategori: string; ozet: string; img: string }[] = [
+const blogRehberYazilari: { baslik: string; kategori: string; ozet: string; img: string; href: string }[] = [
   {
-    baslik: "Yurtdışı başvurularında 5 sık hata",
+    baslik: "Üniversite öğrencileri için ücretsiz etkinlikler nasıl bulunur?",
     kategori: "Rehber",
-    ozet: "Belgeler, zamanlama ve motivasyon mektubu — öğrenci gözüyle net kontrol listesi.",
+    ozet: "Kampüs duyuruları, kulüp kanalları ve online kayıt: şehir ve üniversiteye göre arama ipuçları.",
     img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=85",
+    href: "/etkinlikler",
   },
   {
-    baslik: "Kampüste networking: ilk tanışmadan takibe",
-    kategori: "Kariyer",
-    ozet: "Kulüp etkinliklerinden LinkedIn’e: görünür olmak için pratik adımlar.",
+    baslik: "Kampüs temsilcisi ne yapar?",
+    kategori: "Temsilcilik",
+    ozet: "Görevler, avantajlar ve başvuru süreci; kulüplerle iletişimden etkinlik görünürlüğüne kadar özet.",
     img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=85",
+    href: "/kampus/temsilcilik",
   },
   {
-    baslik: "Dil öğrenirken konuşma kaygısını azaltmak",
-    kategori: "Dil",
-    ozet: "Konuşma kulübü ve peer practice ile haftalık mini hedefler.",
+    baslik: "Yurtdışı eğitim fuarlarında nelere dikkat edilmeli?",
+    kategori: "Yurtdışı eğitim",
+    ozet: "Üniversite temsilcileri, burs soruları ve belge hazırlığı için fuar öncesi kontrol listesi.",
     img: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=900&q=85",
+    href: "/icerik/blog/yurtdisi-basvurularinda-5-sik-hata",
   },
 ];
 
@@ -170,100 +174,63 @@ const highlightCategories: {
 }[] = [
   {
     title: "Üniversite seminerleri",
-    blurb: "Kampüste yüz yüze gelişim ve kariyer oturumları",
+    blurb: "Üniversitelere özel eğitim ve gelişim odaklı yüz yüze seminerler; kariyer ve akademik başlıklarda düzenli takvim",
     icon: Mic2,
     ring: "ring-[#0038ff]/25",
     blob: "from-[#0038ff]/20 via-[#2258dc]/10 to-transparent",
   },
   {
     title: "Dil kursları",
-    blurb: "Konuşma kulüpleri ve sınıfa özel grup dersleri",
+    blurb: "Almanca, İngilizce, İspanyolca ve İtalyanca: konuşma kulüpleri, online sınıflar ve üniversitelere özel grup dersleri",
     icon: Languages,
     ring: "ring-[#CCFF00]/40",
     blob: "from-[#CCFF00]/35 via-[#b8e600]/15 to-transparent",
   },
   {
     title: "Yurtdışı eğitim",
-    blurb: "Webinar, seminer ve fuarlarla net bilgi",
+    blurb: "Yurtdışında eğitim seminerleri, üniversite tanıtım günleri ve fuarlar; ülke rehberleri ve başvuru süreçleri için yönlendirme",
     icon: Globe2,
     ring: "ring-cyan-400/30",
     blob: "from-cyan-400/25 via-sky-400/10 to-transparent",
   },
   {
     title: "Kampüs temsilciliği",
-    blurb: "Kendi üniversitende ağı büyüt, etkinlik düzenle",
+    blurb: "Kendi üniversitende Aktif Kampüs’ü temsil et; kulüplerle iletişim, ortak etkinlik ve kampüs içi görünürlük",
     icon: Users,
     ring: "ring-violet-400/30",
     blob: "from-violet-500/20 via-fuchsia-400/10 to-transparent",
   },
   {
     title: "Sertifika programları",
-    blurb: "Kısa sürede kazanımını belgeleyen programlar",
+    blurb: "Online ve kampüs bazlı kısa dönem eğitimler; kariyer, dil ve liderlik odaklı sertifika hatları",
     icon: Award,
     ring: "ring-amber-400/35",
     blob: "from-amber-400/25 via-orange-400/10 to-transparent",
   },
   {
     title: "Gezi & kampüs turları",
-    blurb: "Şehir ve kampüs keşifleriyle tanıtım turları",
+    blurb: "Yurtiçi ve yurtdışı öğrenci gezileri; kültürel öğrenme, kampüs deneyimi ve dil pratiğini bir arada ele alan programlar",
     icon: MapPinned,
     ring: "ring-emerald-400/30",
     blob: "from-emerald-400/25 via-teal-400/10 to-transparent",
   },
   {
     title: "Topluluk iş birlikleri",
-    blurb: "Kulüplerle ortak etkinlik ve sponsor desteği",
+    blurb: "Kulüp etkinliği yayınlama, ortak program ve sponsorluk: görünürlük, konuşmacı yönlendirmesi ve tanıtım desteği",
     icon: Handshake,
     ring: "ring-rose-400/30",
     blob: "from-rose-400/20 via-pink-400/10 to-transparent",
   },
   {
     title: "Kurumsal eğitimler",
-    blurb: "Markalarla gençlik odaklı eğitim ve projeler",
+    blurb: "Üniversite ve kurumlara özel gençlik odaklı atölyeler; iletişim, liderlik, kariyer hazırlık ve dijital yetkinlik",
     icon: Building2,
     ring: "ring-slate-400/25",
     blob: "from-slate-500/15 via-slate-400/5 to-transparent",
   },
 ];
 
-/** Ana sayfa — Yaklaşan etkinlikler (örnek veri) */
-const upcomingEvents: {
-  title: string;
-  venue: string;
-  when: string;
-  speaker: string;
-  mode: "fiziksel" | "online";
-  spot: "Ücretsiz" | "Kontenjanlı";
-  accent: "lime" | "blue";
-}[] = [
-  {
-    title: "Kariyer Sohbetleri: İlk adım",
-    venue: "Boğaziçi Üniversitesi",
-    when: "24 Nisan 2026 · 14:00",
-    speaker: "Dr. Ayşe Yılmaz",
-    mode: "fiziksel",
-    spot: "Ücretsiz",
-    accent: "lime",
-  },
-  {
-    title: "Yurtdışı yüksek lisans bilgi oturumu",
-    venue: "Online yayın",
-    when: "2 Mayıs 2026 · 19:30",
-    speaker: "Mezun konukları",
-    mode: "online",
-    spot: "Kontenjanlı",
-    accent: "blue",
-  },
-  {
-    title: "İngilizce konuşma kulübü buluşması",
-    venue: "ODTÜ · öğrenci merkezi",
-    when: "8 Mayıs 2026 · 17:00",
-    speaker: "Eğitmen: Can Demir",
-    mode: "fiziksel",
-    spot: "Ücretsiz",
-    accent: "lime",
-  },
-];
+const homeFeaturedEvents = getHomeFeaturedEventCards();
 
 // --- Custom SVG Components for Hand-Drawn Accents ---
 
@@ -607,7 +574,7 @@ export const Component = () => {
             className="mx-auto mt-5 max-w-xl px-3 text-[15px] font-semibold leading-relaxed text-white md:mt-6 md:max-w-2xl md:text-base md:leading-relaxed"
             style={{ textShadow: "0 2px 10px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.35)" }}
           >
-            Öğrencileri, kulüpleri ve fırsatları tek çatıda buluşturuyoruz. Etkinlikler, dil kursları ve yurtdışı programlarına buradan ulaş.
+            Üniversiteleri, öğrencileri ve gelişim fırsatlarını bir araya getiren aktif bir kampüs ağıyız. Üniversite etkinlikleri, dil kursları, yurtdışı eğitim programları ve kampüs temsilciliğine güncel takvim ve rehber içeriklerle ulaş.
           </p>
 
           <div className="mt-4 flex flex-wrap items-center justify-center gap-3 md:mt-5 md:gap-4">
@@ -615,7 +582,7 @@ export const Component = () => {
               href="/etkinlikler"
               className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-[#CCFF00] px-7 py-2.5 text-[14px] font-bold leading-none text-neutral-950 shadow-[0_4px_24px_rgba(0,0,0,0.25)] ring-1 ring-black/15 transition hover:brightness-[1.05] active:scale-[0.98] md:min-h-[48px] md:px-9 md:text-[15px]"
             >
-              Etkinliklere göz at
+              Etkinlikleri keşfet
             </a>
             <a
               href="/basvuru/temsilci"
@@ -706,10 +673,10 @@ export const Component = () => {
                 </span>
               </h2>
               <p className="mt-6 max-w-md text-[15px] font-normal leading-[1.7] text-neutral-900 md:text-base">
-                Öğrencileri, kulüpleri ve markaları sosyal fayda odaklı biçimde bir araya getiren bir platformuz. Seminer ve atölyelerden dil kurslarına, yurtdışı etkinliklerinden kampüs temsilciliğine kadar içerikler tek yerde toplanır.
+                Aktif Kampüs; üniversite öğrencileri, öğrenci toplulukları, akademisyenler, konuşmacılar ve markaları sosyal fayda önceliğiyle buluşturan bir öğrenci platformudur. Eğitim seminerlerinden dil kurslarına, yurtdışı eğitim etkinliklerinden kampüs temsilciliğine uzanan programları şeffaf biçimde duyurur; gelişim, kampüsler arası etkileşim ve erişilebilir fırsatları desteklemeyi amaçlar.
               </p>
               <div className="mt-6 flex flex-wrap gap-2">
-                {["Topluluk öncelikli", "Erişilebilir içerik", "Kampüsler arası ağ"].map((tag) => (
+                {["Topluluk odaklı", "Erişilebilir fırsatlar", "Kampüsler arası bağ"].map((tag) => (
                   <span
                     key={tag}
                     className="rounded-full border border-[#0b1f3f]/20 bg-white px-3.5 py-2 text-[12px] font-semibold text-neutral-900 shadow-sm"
@@ -749,7 +716,7 @@ export const Component = () => {
                     </h3>
                   </div>
                   <p className="max-w-sm text-[14px] font-medium leading-snug text-neutral-800 md:text-[15px]">
-                    Seminerden dile, yurtdışından temsilciliğe: tüm başlıklar tek yerde.
+                    Üniversite seminerleri, dil kursları, yurtdışı eğitim etkinlikleri, kampüs temsilciliği, sertifika ve gezi programları ile kulüp iş birlikleri — her biri sitede ayrı sayfalarda derinleşen başlıkların kısa özeti.
                   </p>
                 </div>
 
@@ -829,11 +796,11 @@ export const Component = () => {
                 </span>
               </h2>
               <p className="mt-5 max-w-xl text-[15px] font-medium leading-relaxed text-white/85">
-                Üniversite veya online; tarih, konuşmacı ve ücretsiz / kontenjan bilgisi tek bakışta. Kartlardan detaya geç.
+                Türkiye genelinde yüz yüze ve online üniversite etkinlikleri; konuşmacı, tarih ve ücretsiz ya da kontenjanlı katılım bilgisini kartlarda özet olarak görüp detaya geçebilirsiniz.
               </p>
             </div>
             <a
-              href="#"
+              href="/etkinlikler"
               className="inline-flex w-fit shrink-0 items-center justify-center rounded-full border-2 border-white/35 bg-white/10 px-6 py-2.5 text-[13px] font-bold text-white backdrop-blur-sm transition hover:bg-white/20"
             >
               Tüm etkinlikler
@@ -841,9 +808,9 @@ export const Component = () => {
           </div>
 
           <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {upcomingEvents.map((ev, i) => (
+            {homeFeaturedEvents.map((ev, i) => (
               <motion.article
-                key={ev.title}
+                key={ev.slug}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
@@ -857,11 +824,11 @@ export const Component = () => {
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="text-[15px] font-black uppercase leading-snug tracking-tight text-white">{ev.title}</h3>
                     <span
-                      className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wide ${
-                        ev.spot === "Ücretsiz" ? "bg-[#CCFF00] text-neutral-950" : "bg-white/15 text-[#e0edff] ring-1 ring-white/25"
+                      className={`max-w-[11rem] shrink-0 rounded-full px-2.5 py-1 text-[9px] font-black uppercase leading-tight tracking-wide sm:text-[10px] ${
+                        ev.accent === "lime" ? "bg-[#CCFF00] text-neutral-950" : "bg-white/15 text-[#e0edff] ring-1 ring-white/25"
                       }`}
                     >
-                      {ev.spot}
+                      {ev.badge}
                     </span>
                   </div>
 
@@ -884,12 +851,12 @@ export const Component = () => {
                     </div>
                     <div className="flex items-start gap-2">
                       <User className="mt-0.5 h-4 w-4 shrink-0 text-[#8eb8ff]" aria-hidden />
-                      <span>{ev.speaker}</span>
+                      <span>{ev.detailLine}</span>
                     </div>
                   </div>
 
                   <a
-                    href="#"
+                    href={`/etkinlikler/${ev.slug}`}
                     className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-[#CCFF00] py-3 text-[12px] font-black uppercase tracking-wider text-neutral-950 shadow-[0_4px_20px_rgba(204,255,0,0.25)] transition group-hover:brightness-105"
                   >
                     Detay
@@ -921,7 +888,7 @@ export const Component = () => {
               </span>
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-[15px] font-semibold leading-relaxed text-[#0b1f3f]/90 md:text-base">
-              Temsilci olarak kampüsün sesi ol; kulüp olarak etkinliği çoğalt. Aynı yeşil çizgi, farklı roller.
+              Temsilci olarak kampüsünde Aktif Kampüs’ü temsil et ve öğrenci fırsatlarını yaygınlaştır; kulüp olarak etkinliğini duyur, ortak program öner ve sponsorluk kanallarına yönlendirme al.
             </p>
           </div>
 
@@ -955,10 +922,10 @@ export const Component = () => {
                     bir temsilci
                   </h3>
                   <p className="max-w-md text-[15px] font-medium leading-relaxed text-white/85">
-                    Duyuru, etkinlik ve topluluk büyütme — kampüsünde Aktif Kampüs’ü temsil et. Başvurunu bırak, sana özel adımları konuşalım.
+                    Kendi kampüsünde kulüplerle iletişim kur, ortak etkinlik planla ve etkinlik katılımını artır. Sertifika, networking ve organizasyon deneyimi gibi avantajlar için başvurunu ilet; süreci birlikte netleştirelim.
                   </p>
                   <a
-                    href="#"
+                    href="/basvuru/temsilci"
                     className="inline-flex w-fit min-h-[48px] items-center justify-center rounded-full bg-[#0038ff] px-8 py-3 text-[14px] font-bold text-white shadow-[0_8px_0_#001A99] transition hover:translate-y-0.5 hover:shadow-[0_4px_0_#001A99]"
                   >
                     Temsilci başvurusu
@@ -996,7 +963,7 @@ export const Component = () => {
                     <span className="text-[#0038ff]">sahneye taşı</span>
                   </h3>
                   <p className="max-w-md text-[15px] font-medium leading-relaxed text-neutral-800">
-                    Listele, ortak program öner, sponsorluk için yönlendirme al. Topluluğun görünürlüğü burada büyür.
+                    Kulüp etkinliğini yayınla, farklı kampüslerle bağ kur; ortak etkinlik ve sponsorluk için güven veren, sade bir dilde yönlendirme al.
                   </p>
                   <ul className="flex flex-col gap-2 text-[14px] font-bold text-[#0b1f3f]">
                     <li className="flex items-center gap-2 border-b border-neutral-200/80 pb-2">
@@ -1013,7 +980,7 @@ export const Component = () => {
                     </li>
                   </ul>
                   <a
-                    href="#"
+                    href="/basvuru/kulup"
                     className="inline-flex w-fit min-h-[48px] items-center justify-center rounded-full border-2 border-[#0b1f3f] bg-[#0b1f3f] px-8 py-3 text-[14px] font-black uppercase tracking-wide text-[#CCFF00] transition hover:bg-[#152a45]"
                   >
                     Kulüp kaydı / iş birliği
@@ -1055,7 +1022,7 @@ export const Component = () => {
                 </span>
               </h2>
               <p className="mt-5 text-[15px] font-bold leading-relaxed text-[#0b1f3f]">
-                Kariyerden dile, yurtdışından girişimciliğe — uzmanlar kampüste ve online buluşuyor. Her isim farklı bir renk, aynı Aktif Kampüs enerjisi.
+                Akademisyenlerden kariyer uzmanlarına, mezun hikâyelerinden dil eğitmenlerine ve girişimcilere kadar konuklarımız seminer, panel ve atölyelerde kampüste ve çevrim içi paylaşımda bulunur.
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {["Seminer & panel", "Atölye & workshop", "Canlı yayın"].map((x) => (
@@ -1114,7 +1081,7 @@ export const Component = () => {
                 </div>
               </div>
               <a
-                href="#"
+                href="/basvuru/genel"
                 className="mt-8 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border-2 border-[#0b1f3f] bg-[#CCFF00] py-3.5 text-[14px] font-black uppercase tracking-wide text-[#0b1f3f] shadow-[0_6px_0_#0b1f3f] transition hover:translate-y-0.5 hover:shadow-[0_3px_0_#0b1f3f]"
               >
                 Konuşmacı başvurusu
@@ -1159,7 +1126,7 @@ export const Component = () => {
                       <h3 className="mt-2 text-[16px] font-black uppercase leading-tight tracking-tight text-[#0b1f3f]">{s.name}</h3>
                       <p className="mt-2 text-[13px] font-bold leading-snug text-neutral-700">{s.role}</p>
                       <a
-                        href="#"
+                        href="/etkinlikler"
                         className="mt-4 inline-flex w-fit items-center rounded-full bg-[#0b1f3f] px-4 py-2 text-[11px] font-black uppercase tracking-wide text-[#CCFF00] transition hover:bg-[#0038ff]"
                       >
                         Oturumlar →
@@ -1198,7 +1165,7 @@ export const Component = () => {
               </span>
             </h2>
             <p className="mt-6 text-[15px] font-medium leading-relaxed text-white/80">
-              Kampüste ve online dil programları; yurtdışı eğitim için webinar, seminer ve fuar takvimi — tek çatı altında.
+              Almanca, İngilizce, İspanyolca ve İtalyanca için kampüs ve online dil programları; yurtdışında eğitim için webinar, seminer ve fuar takvimi birlikte yürütülür. Başvuru süreçleri, burs bilgilendirmesi ve ülke rehberleri ilgili alt sayfalarda ayrıntılandırılır.
             </p>
           </div>
 
@@ -1227,7 +1194,7 @@ export const Component = () => {
               </div>
               <div className="space-y-4 p-6 md:p-8">
                 <p className="text-[14px] font-semibold leading-relaxed text-white/85">
-                  Konuşma kulüpleri, üniversiteye özel grup dersleri ve online sınıflar — seviye ve hedefe göre rota.
+                  A1–C1 seviye hatları, konuşma kulüpleri, akademik ve kariyer İngilizcesi ile üniversitelere özel grup dersleri; seviye ve hedefe göre program önerisi.
                 </p>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {dilKurslariOzeti.map((d) => (
@@ -1241,7 +1208,7 @@ export const Component = () => {
                   ))}
                 </div>
                 <a
-                  href="#"
+                  href="/programlar"
                   className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl bg-[#CCFF00] py-3 text-[14px] font-black uppercase tracking-wide text-[#0b1f3f] transition hover:brightness-105 sm:w-auto sm:px-8"
                 >
                   Dil programları
@@ -1273,7 +1240,7 @@ export const Component = () => {
               </div>
               <div className="space-y-4 p-6 md:p-8">
                 <p className="text-[14px] font-semibold leading-relaxed text-white/85">
-                  Ülke seçimi, başvuru süreçleri ve kampüs buluşmaları için düzenli içerik ve uzman oturumları.
+                  Ülke seçimi, başvuru süreçleri, burs ve finansman bilgilendirmesi ile kampüs buluşmaları; düzenli webinar ve uzman oturumlarıyla desteklenir.
                 </p>
                 <ul className="space-y-3">
                   {yurtdisiOzet.map((y) => (
@@ -1290,7 +1257,7 @@ export const Component = () => {
                   ))}
                 </ul>
                 <a
-                  href="#"
+                  href="/etkinlikler"
                   className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl border-2 border-[#CCFF00] bg-transparent py-3 text-[14px] font-black uppercase tracking-wide text-[#CCFF00] transition hover:bg-[#CCFF00] hover:text-[#0b1f3f] sm:w-auto sm:px-8"
                 >
                   Yurtdışı etkinlikler
@@ -1325,11 +1292,11 @@ export const Component = () => {
                 </span>
               </h2>
               <p className="mt-5 text-[15px] font-bold leading-relaxed text-[#0b1f3f]/90">
-                Markalar, eğitim kurumları ve gençlik odaklı partnerlerle kampüs programlarını büyütüyoruz. Logolar örnek isimlerdir — gerçek iş birlikleriyle güncellenir.
+                Üniversitelere erişim, temsilci ağı ve kampüs içi organik yayılım sunan marka ve eğitim kurumlarıyla; seminer sponsorluğu, workshop partnerliği ve sosyal etki projeleri gibi kampüs aktivasyonlarında iş birliği yürütülür. Logolar örnektir; gerçek partner listesi güncellenir.
               </p>
             </div>
             <a
-              href="#"
+              href="/basvuru/is-birligi"
               className="inline-flex min-h-[48px] shrink-0 items-center justify-center self-start rounded-2xl border-4 border-[#0b1f3f] bg-white px-8 py-3 text-[13px] font-black uppercase tracking-wide text-[#0b1f3f] shadow-[8px_8px_0_#0038ff] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[4px_4px_0_#0038ff] lg:self-end"
             >
               Partner ol
@@ -1390,7 +1357,7 @@ export const Component = () => {
                 <span className="text-[#0038ff] [text-shadow:2px_2px_0_#fff,4px_4px_0_#CCFF00]">ilerle</span>
               </h2>
               <p className="mt-6 text-[15px] font-bold leading-relaxed text-neutral-800">
-                Rehber yazıları, kampüs ipuçları ve duyurular — hepsi açık zeminde, okunaklı ve arşivlenebilir.
+                Öğrenci etkinlikleri, yurtdışı eğitim, dil öğrenimi ve kampüs hayatına dair rehber yazılar; arama motorları için uzun ömürlü, paylaşılabilir içerik üretiminin merkezi.
               </p>
               <div className="mt-6 flex flex-wrap gap-2">
                 {["SEO içerik", "Öğrenci rehberi", "Duyurular"].map((x) => (
@@ -1420,14 +1387,14 @@ export const Component = () => {
                   Okumaya devam
                 </h3>
                 <p className="mt-3 text-[14px] font-bold leading-relaxed text-[#0b1f3f]/85">
-                  Yeni yazılar bülten ve kampüs duyurularıyla paylaşılır; rehberleri tek listede topla, kategoriye göre gez.
+                  Yeni yazılar bülten ve kampüs duyurularıyla paylaşılır; üniversite etkinlikleri, kulüp yönetimi, yurtdışı başvuruları ve kariyer başlıklarında kategorilere göre gezinebilirsiniz.
                 </p>
               </div>
 
               <ul className="relative space-y-2.5 border-y-2 border-dashed border-[#0b1f3f]/20 py-4">
                 {[
                   { Icon: BookOpen, t: "Rehber & nasıl yapılır yazıları", d: "Başvuru, kampüs, kariyer ipuçları" },
-                  { Icon: Megaphone, t: "Duyurular & etkinlik özetleri", d: "Tarihli güncellemeler, tek bakışta" },
+                  { Icon: Megaphone, t: "Duyurular ve etkinlik özetleri", d: "Tarih ve özet bilgileri bir arada" },
                   { Icon: FileText, t: "Blog & SEO içerik", d: "Uzun form, paylaşılabilir başlıklar" },
                 ].map(({ Icon, t, d }) => (
                   <li key={t} className="flex gap-3 rounded-xl bg-white/55 px-3 py-2.5 ring-2 ring-[#0b1f3f]/10">
@@ -1459,7 +1426,7 @@ export const Component = () => {
               </div>
 
               <a
-                href="#"
+                href="/icerik/blog"
                 className="relative inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border-4 border-[#0b1f3f] bg-[#CCFF00] py-3.5 text-[14px] font-black uppercase tracking-wide text-[#0b1f3f] shadow-[6px_6px_0_#0b1f3f] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_#0b1f3f]"
               >
                 <Newspaper className="h-4 w-4 shrink-0" aria-hidden />
@@ -1507,7 +1474,7 @@ export const Component = () => {
                       <h3 className="text-[15px] font-black uppercase leading-snug tracking-tight text-[#0b1f3f] md:text-[16px]">{y.baslik}</h3>
                       <p className="mt-3 flex-1 text-[14px] font-semibold leading-relaxed text-neutral-700">{y.ozet}</p>
                       <a
-                        href="#"
+                        href={y.href}
                         className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-[#0b1f3f] px-4 py-2 text-[12px] font-black uppercase tracking-wide text-[#CCFF00] transition hover:bg-[#0038ff]"
                       >
                         Devamını oku
@@ -1550,11 +1517,11 @@ export const Component = () => {
                   Başvurunu ilet,
                 </span>
                 <span className="mt-1 block text-[#CCFF00]" style={titleStyle}>
-                  biz yönlendirelim
+                  ekibimiz yönlendirsin
                 </span>
               </h2>
               <p className="mt-5 max-w-xl text-[15px] font-bold leading-relaxed text-white/80">
-                Her başvuru türünün kendi form sayfası var. Sağdaki kartlardan türünü seç; ön kayıt ve yönlendirme aynı akışla devam eder.
+                Kampüs temsilciliği, kulüp katılımı, konuşmacılık, etkinlik önerisi, marka iş birliği, kurumsal eğitim ve dil ile yurtdışı programları için ayrı formlar kullanılır. Ön kayıt sonrası size dönüş yapılır.
               </p>
 
               <div className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -1645,7 +1612,7 @@ export const Component = () => {
                       </span>
                     </h2>
                     <p className="mt-4 max-w-[20rem] text-[14px] font-bold leading-relaxed text-[#0b1f3f]/85">
-                      Etkinlik, dil, yurtdışı ve topluluk — hepsi bağlantılı.
+                      Üniversite etkinlikleri, dil kursları, yurtdışı eğitim ve kulüp iş birlikleri birbirini tamamlayan programlar olarak tasarlanır.
                     </p>
                   </div>
                   <a
@@ -1659,7 +1626,7 @@ export const Component = () => {
 
                 <div className="flex min-h-[260px] flex-1 flex-col justify-between gap-8 bg-white p-8 md:min-h-0 md:p-10 lg:max-w-md lg:flex-none xl:max-w-lg">
                   <p className="text-[15px] font-bold leading-relaxed text-[#0b1f3f]/88">
-                    İletişim için buradan yaz; tüm sayfa ve bölüm linkleri aşağıda gruplu — yeni rotalar tek veri listesinden büyür.
+                    Genel iletişim, temsilcilik, kulüp iş birliği, konuşmacılık ve marka talepleri için yazabilirsiniz. Menüdeki hizmetlere ait sayfa bağlantıları aşağıda gruplandı.
                   </p>
 
                   <div className="flex flex-col gap-4 border-t-2 border-dashed border-[#0b1f3f]/25 pt-8 sm:flex-row sm:items-center sm:justify-between">
@@ -1674,8 +1641,8 @@ export const Component = () => {
                     </a>
                     <div className="flex items-center gap-2">
                       {[
-                        { Icon: Instagram, label: "Instagram", href: "#" },
-                        { Icon: Linkedin, label: "LinkedIn", href: "#" },
+                        { Icon: Instagram, label: "Instagram", href: "/kurumsal/iletisim" },
+                        { Icon: Linkedin, label: "LinkedIn", href: "/kurumsal/iletisim" },
                       ].map(({ Icon, label, href }) => (
                         <a
                           key={label}
@@ -1723,19 +1690,19 @@ export const Component = () => {
 
               <div className="flex flex-col items-start justify-between gap-3 border-t-4 border-[#0b1f3f] bg-[#f1f5f9] px-4 py-4 sm:flex-row sm:items-center sm:px-5 md:px-6">
                 <div className="flex flex-wrap gap-x-5 gap-y-1 text-[12px] font-bold text-[#0b1f3f]/75">
-                  <a href="#" className="transition hover:text-[#0038ff]">
+                  <a href="/kurumsal/iletisim" className="transition hover:text-[#0038ff]">
                     Gizlilik
                   </a>
                   <span className="text-[#0b1f3f]/30" aria-hidden>
                     ·
                   </span>
-                  <a href="#" className="transition hover:text-[#0038ff]">
+                  <a href="/kurumsal/sss" className="transition hover:text-[#0038ff]">
                     KVKK
                   </a>
                   <span className="text-[#0b1f3f]/30" aria-hidden>
                     ·
                   </span>
-                  <a href="#" className="transition hover:text-[#0038ff]">
+                  <a href="/kurumsal/sss" className="transition hover:text-[#0038ff]">
                     Kullanım koşulları
                   </a>
                 </div>
